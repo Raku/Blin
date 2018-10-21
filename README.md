@@ -36,15 +36,24 @@ for the list of packages to install.
 
 ### Running
 
+Currently it is supposed to run only on 64-bit linux systems.
+
 If you want to test one or more modules:
 
 ```bash
-time PERL6LIB=lib ./bin/blin.p6 Foo::Regressed Foo::Regressed::Very Foo::Dependencies::B-on-A
+PERL6LIB=lib bin/blin.p6 SomeModuleHere AnotherModuleHere
+```
+
+Here is a more practical example:
+
+```bash
+time PERL6LIB=lib START_POINT=2018.06 END_POINT=2018.09 bin/blin.p6 Foo::Regressed Foo::Regressed::Very Foo::Dependencies::B-on-A
 ```
 
 If you want to test the whole ecosystem:
+
 ```bash
-time PERL6LIB=lib ./bin/blin.p6
+time PERL6LIB=lib bin/blin.p6
 ```
 
 Estimated time to test the whole ecosystem with 24 cores is ≈60 minutes.
