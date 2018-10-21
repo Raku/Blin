@@ -46,9 +46,9 @@ my $skip-tests = (
 
 
 #| Old revision
-my $start-point; # will be initialized to last release (hopefully)
+my $start-point   = %*ENV<START_POINT>; # later initialized to the last release if unset
 #| New revision
-my $end-point     = ‘HEAD’;
+my $end-point     = %*ENV<END_POINT> // ‘HEAD’;
 
 #| Where to install zef
 my $zef-path      = ‘data/zef’.IO;
