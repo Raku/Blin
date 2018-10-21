@@ -1,0 +1,23 @@
+{
+    "perl"        : "6.c",
+    "name"        : "Blin",
+    "version"     : "1.0.0",
+    "description" : "Project Blin – Toasting Reinvented",
+    "authors"     : [
+        "Aleks-Daniel Jakimenko-Aleksejev <alex.jakimenko@gmail.com>"
+    ],
+    "license"     : "AGPL-3.0-or-later",
+    "provides"    : {
+        "Blin::Module"     : "lib/Blin/Module.pm6",
+        "Blin::Processing" : "lib/Blin/Processing.pm6"
+    },
+    "depends"     : [
+        "File::Directory::Tree",
+        "File::Temp",
+        "JSON::Fast",
+        "Whateverable",
+        "Zef"
+    ],
+    "resources"   : [ ],
+    "source-url"  : "https://github.com/perl6/Blin.git"
+}

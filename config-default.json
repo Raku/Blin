@@ -1,0 +1,28 @@
+{
+    "repo-origin-rakudo"       : "https://github.com/rakudo/rakudo.git",
+    "repo-current-rakudo-moar" : "./data/rakudo-moar",
+    "repo-origin-moarvm"       : "https://github.com/MoarVM/MoarVM.git",
+    "repo-current-moarvm"      : "./data/moarvm",
+
+    "archives-location"        : "./data/builds",
+    "builds-location"          : "/tmp/whateverable/",
+
+    "moarvm" : "./data/moarvm",
+
+    "rakudo-repo"   : "https://github.com/rakudo/rakudo",
+
+    "mothership": "https://whateverable.6lang.org",
+
+    "github": {
+        "login": "",
+        "access_token": ""
+    },
+
+    "bisectable": {
+        "commit-link" : "https://github.com/rakudo/rakudo/commit",
+        "build-lock"  : "./lock",
+        "trim-chars"  : 2000
+    },
+
+    "default-stdin": ""
+}

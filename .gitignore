@@ -1,0 +1,7 @@
+.precomp
+.idea
+data
+output
+installed
+config.json
+*.swp
