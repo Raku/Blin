@@ -47,7 +47,7 @@ PERL6LIB=lib bin/blin.p6 SomeModuleHere AnotherModuleHere
 Here is a more practical example:
 
 ```bash
-time PERL6LIB=lib START_POINT=2018.06 END_POINT=2018.09 bin/blin.p6 Foo::Regressed Foo::Regressed::Very Foo::Dependencies::B-on-A
+time PERL6LIB=lib bin/blin.p6 --old=2018.06 --new=2018.09 Foo::Regressed Foo::Regressed::Very Foo::Dependencies::B-on-A
 ```
 
 If you want to test the whole ecosystem:

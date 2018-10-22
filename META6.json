@@ -1,7 +1,7 @@
 {
     "perl"        : "6.c",
     "name"        : "Blin",
-    "version"     : "1.0.0",
+    "version"     : "1.0.1",
     "description" : "Project Blin – Toasting Reinvented",
     "authors"     : [
         "Aleks-Daniel Jakimenko-Aleksejev <alex.jakimenko@gmail.com>"

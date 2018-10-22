@@ -10,16 +10,30 @@ use Whateverable::Builds;
 use Whateverable::Config;
 use Whateverable::Running;
 
-
-#| Use this to test some specific modules
-#| Leave empty to test the whole ecosystem
-my @specified-modules = @*ARGS;
+unit sub MAIN(
+    #| Old revision (initialized to the last release if unset)
+    Str :old($start-point) is copy,
+    #| New revision (default: HEAD)
+    Str :new($end-point) = ‘HEAD’,
+    #| Number of threads to use (initialized to the output of `nproc` if unset)
+    Int :$nproc is copy,
+    #| Thread number multiplier (default: 1.0)
+    Rat :$nproc-multiplier = 1.0,
+    #| Number of extra runs for regressed modules (default: 4)
+    Int :$deflap = 4, # Can be really high because generally we are
+                      # not expecting a large fallout with many
+                      # now-failing modules.
+    #| Number of seconds between printing the current status (default: 60.0)
+    Rat :$heartbeat = 60.0,
+    #| Use this to test some specific modules (empty = whole ecosystem)
+    *@specified-modules,
+);
 
 #| Where to pull source info from
 my @sources       = <
-   https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/cpan.json
-   http://ecosystem-api.p6c.org/projects.json
->;
+    https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/cpan.json
+    http://ecosystem-api.p6c.org/projects.json
+>; # TODO steal that from zef automatically
 
 #| Core modules that are ignored as dependencies
 my $ignored-deps  = <Test NativeCall Pod::To::Text Telemetry snapper>.Set;
@@ -45,24 +59,12 @@ my $skip-tests = (
 ).Set;
 
 
-#| Old revision
-my $start-point   = %*ENV<START_POINT>; # later initialized to the last release if unset
-#| New revision
-my $end-point     = %*ENV<END_POINT> // ‘HEAD’;
-
 #| Where to install zef
 my $zef-path      = ‘data/zef’.IO;
 #| Some kind of a timeout 😂
 my $timeout       = 60 × 10;
-#| Number of extra runs. Can be really high because generally we
-#| are not expecting a large fallout with many now-failing modules.
-my $deflap        = 4;
-#| Number of seconds between printing the progress
-my $heartbeat     = 60;
 
-my $nproc-mult    = 1.0;
-my $nproc         = $nproc-mult × +run(:out, ‘nproc’).out.slurp;
-my $semaphore     = Semaphore.new: $nproc.Int;
+my $semaphore;
 
 my $output-path   = ‘output’.IO;
 my $overview-path = $output-path.add: ‘overview’;
@@ -96,6 +98,11 @@ my $save-lock = Lock.new; # to eliminate miniscule chance of racing when saving
 
 
 note ‘🥞 Prep’;
+
+$nproc //= ($nproc-multiplier × +run(:out, ‘nproc’).out.slurp).Int;
+$semaphore = Semaphore.new: $nproc.Int;
+
+note “🥞 Will use up to $nproc threads for testing modules”;
 
 ensure-config ‘./config-default.json’;
 pull-cloned-repos; # pull rakudo and other stuff
