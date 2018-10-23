@@ -346,6 +346,12 @@ sub test-module($full-commit-hash, $module,
                 :$install=False,
                 :$zef-path!, :$zef-config-path, :$timeout!,
                 :@always-unpacked, :$testable=True) is export {
+
+    if $full-commit-hash eq @annoying-revisions.any {
+        return %(output => ‘This revision is known to divert bisection into the wrong direction’,
+                 exit-code => -1, signal => -1, time => -1,)
+    }
+
     build-exists $full-commit-hash;
     my $install-path = $module.install-path;
     mkdir $install-path;
@@ -354,11 +360,6 @@ sub test-module($full-commit-hash, $module,
     @deps .= unique;
 
     sub run-it($path) { # basically runs zef
-        if $full-commit-hash eq @annoying-revisions.any {
-            return %(output => ‘This revision is known to divert bisection into the wrong direction’,
-                     exit-code => -1, signal => -1, time => -1,)
-        }
-
         my $binary-path = $path.IO.add: ‘bin/perl6’;
         my %tweaked-env = %*ENV;
         %tweaked-env<PATH> = join ‘:’, $binary-path.parent, (%tweaked-env<PATH> // Empty);
