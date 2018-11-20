@@ -335,7 +335,10 @@ sub save-overview {
         spurt $overview-path, @modules.sort(*.name).map({
             my $result = .done ?? .done.result !! Unknown;
             my $line = “{.name} – $result”;
-            $line ~= “, Bisected: {.bisected}” if $result == Fail;
+            if $result == Fail {
+                $line ~= “, Bisected: {.bisected}”;
+                spurt $overview-path.add(‘output_’ ~ .handle), .output-old;
+            }
             $line
         }).join: “\n”
     }

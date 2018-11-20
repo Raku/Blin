@@ -425,12 +425,15 @@ sub process-module(Module $module,
                                  :$zef-path, :$zef-config-path, :$timeout,
                                  :@always-unpacked, :$testable,
                                  install => $module.needed;
-    spurt $module.install-path.IO.add(‘log’), $new-result<output>;
+    $module.output-new = $new-result<output>;
+    spurt $module.install-path.IO.add(‘log’), $module.output-new;
     return $module.done.keep: $OK if alright $new-result; # don't even test the old one
+
     note “🥞🥞🥞 Testing $module.name() (old)”; # (old revision, start point)
     my $old-result = test-module $start-point-full, $module,
                                  :$zef-path, :$zef-config-path, :$timeout,
                                  :@always-unpacked, :$testable;
+    $module.output-old = $old-result<output>;
 
     return $module.done.keep: AlwaysFail unless alright $old-result;
 
