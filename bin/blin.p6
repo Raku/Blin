@@ -337,7 +337,7 @@ sub save-overview {
             my $line = “{.name} – $result”;
             if $result == Fail {
                 $line ~= “, Bisected: {.bisected}”;
-                spurt $overview-path.add(‘output_’ ~ .handle), .output-old;
+                spurt $output-path.add(‘output_’ ~ .handle), .output-old;
             }
             $line
         }).join: “\n”
