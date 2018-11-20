@@ -10,9 +10,13 @@ has Str     @.errors;
 has Bool    $.visited;
 has Promise $.done = Promise.new;
 
-method install-path {
+method handle {
     # TODO surely we can do better to ensure it won't clash
-    ‘installed/’ ~ $.name ~ ‘_’ ~ $.version
+    $.name ~ ‘_’ ~ $.version
+}
+
+method install-path {
+    ‘installed/’ ~ self.handle
 }
 
 method deps($leaf = False) {

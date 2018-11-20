@@ -366,10 +366,10 @@ for $to-visualize.keys -> $module {
         when ZefFailure             { ‘crimson’     }
         when UnhandledException     { ‘hotpink’     }
     }
-    $dot ~= “    "{$module.name}" [color=$color];\n”;
+    $dot ~= “    "{$module.handle}" [color=$color];\n”;
     for $module.depends.keys {
         next unless $_ ∈ $to-visualize;
-        $dot ~= “    "{$module.name}" -> "{.name}";\n”;
+        $dot ~= “    "{$module.handle}" -> "{.handle}";\n”;
     }
     $dot ~= “\n”;
 }
