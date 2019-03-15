@@ -80,4 +80,4 @@ ENV RAKUDO_OLD $rakudo_old
 ENV RAKUDO_NEW $rakudo_new
 
 CMD PERL6LIB=lib bin/blin.p6 --old=$RAKUDO_OLD --new=$RAKUDO_NEW $MODULES; \
-    cat output/overview*
+    cat output/*
