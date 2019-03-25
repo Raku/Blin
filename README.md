@@ -52,8 +52,8 @@ time PERL6LIB=lib bin/blin.p6 --old=2018.06 --new=2018.09 Foo::Regressed Foo::Re
 
 You can also test arbitrary scripts. The code can depend on modules,
 in which case they have to be listed on the command line (e.g. for a
-script depending on WWW you should list WWW module, dependencies will
-be detected automatically).
+script depending on WWW you should list WWW module, dependencies of
+WWW will be resolved automatically).
 
 Using this ticket as an example: https://github.com/rakudo/rakudo/issues/2779
 
