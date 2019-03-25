@@ -50,6 +50,31 @@ Here is a more practical example:
 time PERL6LIB=lib bin/blin.p6 --old=2018.06 --new=2018.09 Foo::Regressed Foo::Regressed::Very Foo::Dependencies::B-on-A
 ```
 
+You can also test arbitrary scripts. The code can depend on modules,
+in which case they have to be listed on the command line (e.g. for a
+script depending on WWW you should list WWW module, dependencies will
+be detected automatically).
+
+Using this ticket as an example: https://github.com/rakudo/rakudo/issues/2779
+
+Create file `foo.p6` with this content:
+
+```perl6
+use WWW;
+my @stations;
+@stations = | jpost "https://www.perl6.org", :limit(42);
+```
+
+
+Then run Blin:
+```bash
+./bin/blin.p6 --old=2018.12 --new=HEAD --custom-script=foo.p6 WWW
+```
+
+Then check out the output folder to see the results. Essentially, it
+is a local Bisectable.
+
+
 If you want to test the whole ecosystem:
 
 ```bash
