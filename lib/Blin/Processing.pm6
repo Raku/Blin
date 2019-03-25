@@ -374,17 +374,26 @@ sub test-module($full-commit-hash, $module,
             return %(output => ‘Commit exists, but a perl6 executable could not be built for it’,
                      exit-code => -1, signal => -1, time => -1,)
         }
-        my $result = get-output $binary-path,
-                     ‘--’,
-                     $zef-path.add(‘/bin/zef’),
-                     “--config-path=$zef-config-path”,
-                     <--verbose --force-build --force-install>,
-                     ($testable ?? ‘--force-test’ !! ‘--/test’),
-                     <--/depends --/test-depends --/build-depends>,
-                     ‘install’,
-                     ($install ?? Empty !! ‘--dry’),
-                     “--to=inst#$install-path”, $module.name,
-                     :stdin(‘’), :$timeout, ENV => %tweaked-env, :!chomp;
+
+        my $result;
+        if $module.test-script { # fake module
+            $result = get-output $binary-path,
+                      ‘--’,
+                      $module.test-script,
+                      :stdin(‘’), :$timeout, ENV => %tweaked-env, :!chomp;
+        } else { # normal module
+            $result = get-output $binary-path,
+                      ‘--’,
+                      $zef-path.add(‘/bin/zef’),
+                      “--config-path=$zef-config-path”,
+                      <--verbose --force-build --force-install>,
+                      ($testable ?? ‘--force-test’ !! ‘--/test’),
+                      <--/depends --/test-depends --/build-depends>,
+                      ‘install’,
+                      ($install ?? Empty !! ‘--dry’),
+                      “--to=inst#$install-path”, $module.name,
+                      :stdin(‘’), :$timeout, ENV => %tweaked-env, :!chomp;
+        }
         # XXX ↓ this workaround looks stupid
         $result<exit-code> = 1 if $result<output>.contains: ‘[FAIL]:’;
         $result

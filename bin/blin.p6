@@ -25,6 +25,8 @@ unit sub MAIN(
                       # now-failing modules.
     #| Number of seconds between printing the current status (default: 60.0)
     Rat :$heartbeat = 60.0,
+    #| Additional scripts to be tested
+    :$custom-script, # XXX Oh sausages! https://github.com/rakudo/rakudo/issues/2797
     #| Use this to test some specific modules (empty = whole ecosystem)
     *@specified-modules,
 );
@@ -205,6 +207,21 @@ note ‘🥞🥞 Sorting modules’;
 .value = .value.sort(*.version).eager for %lookup;
 
 
+if $custom-script {
+    note ‘🥞🥞 Generating fake modules for custom scripts’;
+    for $custom-script.list -> IO() $script {
+        die “Script “$script” does not exist” unless $script.e;
+        my Module $module .= new:
+            name    => ~$script,
+            version => v1234567890, # sue me
+            depends => @specified-modules.Set, # depend on everything specified on the command line
+            test-script => $script,
+        ;
+        @modules.push: $module;
+        %lookup{$module.name}.push: $module;
+    }
+}
+
 note ‘🥞🥞 Resolving dependencies’;
 for @modules -> $module {
     sub resolve-dep($depstr) {
@@ -231,7 +248,9 @@ for @modules -> $module {
 note ‘🥞🥞 Marking latest versions and their deps’;
 for %lookup {
     next unless .key eq .value».name.any; # proceed only if not an alias
-    next if @specified-modules and not .key eq @specified-modules.any;
+    if @specified-modules or $custom-script {
+        next if not .key eq @specified-modules.any | $custom-script.any;
+    }
     .value.tail.needify
 }
 
