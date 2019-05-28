@@ -73,7 +73,7 @@ ADD $PWD /opt/perl6/blin
 
 RUN zef install --deps-only $PWD
 
-ARG rakudo_old=2018.10
+ARG rakudo_old=2019.03
 ARG rakudo_new=HEAD
 
 ENV RAKUDO_OLD $rakudo_old
