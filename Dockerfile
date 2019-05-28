@@ -1,4 +1,4 @@
-FROM rakudo-star:2018.10
+FROM rakudo-star:2019.03
 LABEL maintainer="Kane Valentine <kane@cute.im>"
 
 RUN set -ex; \
