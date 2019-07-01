@@ -20,7 +20,7 @@ are some advantages:
 
 Install required packages:
 ```bash
-sudo apt install zstd lrzip
+sudo apt install zstd lrzip graphviz
 ```
 
 Install dependencies:
