@@ -161,8 +161,18 @@ spurt $quick-test, “say 42\n”;
 
 die ‘No build for start point’ unless build-exists $start-point-full;
 die ‘No build for end point’   unless build-exists   $end-point-full;
-die ‘Dead start point’ if run-snippet($start-point-full, $quick-test)<output>.chomp ne 42;
-die ‘Dead end point’   if run-snippet(  $end-point-full, $quick-test)<output>.chomp ne 42;
+my $test-start = run-snippet $start-point-full, $quick-test;
+my $test-end   = run-snippet   $end-point-full, $quick-test;
+if $test-start<output>.chomp ne 42 {
+    note ‘Dead start point. Output:’;
+    note $test-start<output>;
+    die
+}
+if $test-end<output>.chomp ne 42 {
+    note ‘Dead end point. Output:’;
+    note $test-end<output>;
+    die
+}
 
 
 # Leave some builds unpacked
