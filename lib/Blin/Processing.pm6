@@ -449,11 +449,14 @@ sub process-module(Module $module,
 
     note “🥞🥞🥞 Testing $module.name() for flappiness”;
     for ^$deflap {
-        if alright test-module $end-point-full, $module,
+        if alright test-module $start-point-full, $module,
                                :$zef-path, :$zef-config-path, :$timeout,
                                :@always-unpacked, :$testable {
             return $module.done.keep: Flapper
         }
+        # TODO also test end point too and see if we can confirm that
+        # it's not a flapper, if it is a flapping regression then
+        # deflap on every bisect step?
     }
 
     note “🥞🥞🥞 Bisecting $module.name()”;
