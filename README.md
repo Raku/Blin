@@ -94,3 +94,9 @@ installs. ☠⚠**
 See `output/overview` file for a basic overview of results. More
 details for specific modules can be found in `installed/`
 directory. Betters ways to view the data should come soon (hopefully).
+
+### Docker
+
+For info about the Docker image, have a look at the
+[Readme file ](docker/README.md) in the docker directory.
+

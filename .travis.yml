@@ -1,0 +1,6 @@
+language: generic
+sudo: required
+services:
+  - docker
+script:
+  - docker build -t rakudo/blin:latest -f docker/Dockerfile .
