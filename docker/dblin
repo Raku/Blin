@@ -1,0 +1,3 @@
+#!/bin/bash
+docker pull rakudo/blin
+docker run -ti -v /var/tmp/Blin-volume:/mnt rakudo/blin $@
