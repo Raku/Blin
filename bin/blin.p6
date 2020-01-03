@@ -68,7 +68,7 @@ my $zef-dumpster-path = ‘data/zef-data’.IO;
 #↑ XXX Trash pickup services are not working, delete the directory
 #↑     manually from time to time.
 #| Some kind of a timeout 😂
-my $timeout       = 60 × 10;
+my $timeout       = 3 × 60 × 10;
 
 my $semaphore;
 
