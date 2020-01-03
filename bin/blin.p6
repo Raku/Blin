@@ -66,7 +66,7 @@ my $skip-tests = (
    'API::USNavalObservatory', 'App::jsonv', 'App::P6Dx',
    'Aria', 'Astro::Sunrise', 'Backtrace::AsHTML', 'Bencode',
    'Class::Utils', 'CompUnit::Search', 'CompUnit::Util',
-   'Data::Pretty', 'Editsrc::Uggedit', 'Facter', '	FileSystem::Capacity',
+   'Data::Pretty', 'Editsrc::Uggedit', 'Facter', 'FileSystem::Capacity',
    'Flower', 'Game::Crypt', 'Geo::IP2Location::Lite', 'Getopt::Kinoko',
    'GGE', 'Hinges', 'HTML::MyHTML', 'HTML::Parser::XML', 'HTML::Restrict',
    'HTML::Tag', 'Ini::Storage', 'Inline', 'IO::Path::More',
