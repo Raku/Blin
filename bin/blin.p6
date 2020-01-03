@@ -58,8 +58,31 @@ my $skip-tests = (
    ‘Time::Duration’,
    ‘Toaster’,
    ‘Uzu’,
+   # Do not check modules that are broken and seemingly abandoned.
+   # we tried to reach out to authors, but no response for months leaves
+   # these in a limbo we don't want to spend time on
+   'Acme::Flutterby', 'Acme::Mangle', 'Acme::Skynet',
+   'AI::FANN', 'Algorithm::BloomFilter', 'Algorithm::Viterbi',
+   'API::USNavalObservatory', 'App::jsonv', 'App::P6Dx',
+   'Aria', 'Astro::Sunrise', 'Backtrace::AsHTML', 'Bencode',
+   'Class::Utils', 'CompUnit::Search', 'CompUnit::Util',
+   'Data::Pretty', 'Editsrc::Uggedit', 'Facter', '	FileSystem::Capacity',
+   'Flower', 'Game::Crypt', 'Geo::IP2Location::Lite', 'Getopt::Kinoko',
+   'GGE', 'Hinges', 'HTML::MyHTML', 'HTML::Parser::XML', 'HTML::Restrict',
+   'HTML::Tag', 'Ini::Storage', 'Inline', 'IO::Path::More',
+   'IO::Prompter', 'Kains', 'Lingua::Number', 'List::Utils',
+   'Log::Minimal', 'Log::ZMQ', 'Masquerade', 'Math::Arrow',
+   'Math::ContinuedFractions', 'Math::Symbolic', 'Math::ThreeD',
+   'Modular', 'Movieinfo', 'Net::DNS', 'Net::Packet', 'Net::Pcap',
+   'OO::Schema', 'P6Repl::Helper', 'Package::Updates', 'panda-stub',
+   'Perl6-Math-Quaternion', 'Plosurin', 'Pod::Parser', 'Pod::PerlTricks',
+   'Pod::Strip', 'Printer::ESCPOS', 'Questhub', 'Rabble', 'Rakudo::Perl6::Parsing',
+   'Rakudo::Perl6::Tracer', 'Slang::AltTernary', 'SOAP::Client', 'SSL',
+   'System::DiskAndUpdatesAlerts', 'TelegramBot', 'Test::Junkie',
+   'Text::Indented', 'Text::VimColour', 'Time::Duration', 'TOML',
+   'Unicode::GCB', 'WebService::AWS::Auth::V4', 'WebService::HazIP',
+   'XHTML::Writer', 'XML::Canonical', 'XXX',
 ).Set;
-
 
 #| Where to install zef
 my $zef-path      = ‘data/zef’.IO;
