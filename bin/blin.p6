@@ -283,7 +283,7 @@ for %lookup {
     next unless .key eq .value».name.any; # proceed only if not an alias
     if @specified-modules or $custom-script {
         next if not .key eq @specified-modules.any;
-        with $custom-script {
+        if $custom-script.defined {
             next if not .key eq $_.any;
         }
     }
