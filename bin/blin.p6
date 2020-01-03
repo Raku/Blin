@@ -281,13 +281,7 @@ for @modules -> $module {
 note ‘🥞🥞 Marking latest versions and their deps’;
 for %lookup {
     next unless .key eq .value».name.any; # proceed only if not an alias
-    if @specified-modules or $custom-script {
-        next if not .key eq @specified-modules.any;
-        if $custom-script.defined {
-            next if not .key eq $_.any;
-        }
-    }
-    .value.tail.needify
+    .value.tail.needify if $custom-script && .key eq $custom-script || .key eq @specified-modules.any;
 }
 
 
