@@ -282,7 +282,10 @@ note ‘🥞🥞 Marking latest versions and their deps’;
 for %lookup {
     next unless .key eq .value».name.any; # proceed only if not an alias
     if @specified-modules or $custom-script {
-        next if not .key eq @specified-modules.any | $custom-script.any;
+        next if not .key eq @specified-modules.any;
+        with $custom-script {
+            next if not .key eq $_.any;
+        }
     }
     .value.tail.needify
 }
