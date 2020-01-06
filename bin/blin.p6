@@ -60,7 +60,6 @@ my $skip-tests = (
    ‘Uzu’,
 ).Set;
 
-
 #| Where to install zef
 my $zef-path      = ‘data/zef’.IO;
 my $zef-config-path = ‘data/zef-config.json’.IO;
@@ -68,7 +67,7 @@ my $zef-dumpster-path = ‘data/zef-data’.IO;
 #↑ XXX Trash pickup services are not working, delete the directory
 #↑     manually from time to time.
 #| Some kind of a timeout 😂
-my $timeout       = 60 × 10;
+my $timeout       = 3 × 60 × 10;
 
 my $semaphore;
 
@@ -258,10 +257,7 @@ for @modules -> $module {
 note ‘🥞🥞 Marking latest versions and their deps’;
 for %lookup {
     next unless .key eq .value».name.any; # proceed only if not an alias
-    if @specified-modules or $custom-script {
-        next if not .key eq @specified-modules.any | $custom-script.any;
-    }
-    .value.tail.needify
+    .value.tail.needify if $custom-script && .key eq $custom-script || .key eq @specified-modules.any;
 }
 
 
