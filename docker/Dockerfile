@@ -21,6 +21,6 @@ echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs buster main" > \
 RUN mkdir -p /usr/share/man/man1 && apt-get update && set -xv ;\
 apt-get install -y $(cat /Blin/docker/pkg-dependencies |grep -v '^#')
 RUN echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config
-RUN cd /Blin && zef install --verbose --deps-only .
+RUN cd /Blin && env PERL6LIB=/Blin/lib zef install --verbose --deps-only .
 
 ENTRYPOINT [ "/Blin/docker/entrypoint.sh" ]
