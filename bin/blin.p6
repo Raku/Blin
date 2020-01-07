@@ -33,8 +33,8 @@ unit sub MAIN(
 
 #| Where to pull source info from
 my @sources       = <
+    https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/p6c1.json
     https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/cpan.json
-    https://ecosystem-api.p6c.org/projects.json
 >; # TODO steal that from zef automatically
 
 #| Core modules that are ignored as dependencies
