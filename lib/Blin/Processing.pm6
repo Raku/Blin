@@ -449,9 +449,11 @@ sub process-module(Module $module,
 
     note “🥞🥞🥞 Testing $module.name() for flappiness”;
     for ^$deflap {
-        if alright test-module $start-point-full, $module,
-                               :$zef-path, :$zef-config-path, :$timeout,
-                               :@always-unpacked, :$testable {
+        # Be careful when touching this piece of code. If you break
+        # it, all regressions will appear as flappers
+        if not alright test-module $start-point-full, $module,
+                                   :$zef-path, :$zef-config-path, :$timeout,
+                                   :@always-unpacked, :$testable {
             return $module.done.keep: Flapper
         }
         # TODO also test end point too and see if we can confirm that
