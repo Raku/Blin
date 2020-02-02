@@ -58,6 +58,7 @@ libxslt-dev
 libxxhash-dev
 libyaml-dev
 libzmq3-dev
+llvm-7-dev
 lrzip
 python-jupyter-core
 python3-jupyter-core
