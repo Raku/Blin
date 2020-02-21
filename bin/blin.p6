@@ -399,7 +399,7 @@ note ‘🥞🥞 Saving the json output’;
 
 note ‘🥞🥞 Saving the dot file’;
 my @bisected = @modules.grep(*.done.result == Fail);
-# Not algorithmicaly awesome, but will work just fine in practice
+# Not algorithmically awesome, but will work just fine in practice
 my Set $to-visualize = @bisected.Set;
 $to-visualize ∪= (gather  .deps: True).Set for @bisected;
 $to-visualize ∪= (gather .rdeps: True).Set for @bisected;
