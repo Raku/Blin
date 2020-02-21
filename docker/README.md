@@ -1,6 +1,6 @@
 # Blin Docker image
 
-The `dblin` script wraps the docker commands. It taks the same parameters as
+The `dblin` script wraps the docker commands. It takes the same parameters as
 `blin.p6`
 
 ```
