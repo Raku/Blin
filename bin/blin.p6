@@ -73,6 +73,7 @@ my $semaphore;
 
 my $output-path   = ‘output’.IO;
 my $overview-path = $output-path.add: ‘overview’;
+my $markdown-path = $output-path.add: 'failures.md';
 my $dot-path      = $output-path.add: ‘overview.dot’;
 my $svg-path      = $output-path.add: ‘overview.svg’;
 my $json-path     = $output-path.add: ‘data.json’;
@@ -364,11 +365,12 @@ note ‘🥞🥞 Saving the overview’;
 
 sub save-overview {
     $save-lock.protect: {
-        spurt $overview-path, @modules.sort(*.name).map({
+        my @sorted-modules = @modules.sort(*.name);
+        spurt $overview-path, @sorted-modules.map({
             my $result = .done ?? .done.result !! Unknown;
             my $line = “{.name} – $result”;
             if $result == Fail {
-                $line ~= “, Bisected: {.bisected}”;
+                $line ~= “, Bisected: { .bisected }”;
                 spurt $output-path.add(‘output_’ ~ .handle), .output-new;
             }
             $line
@@ -377,6 +379,40 @@ sub save-overview {
 }
 
 save-overview;
+
+
+note '🥞🥞 Saving the failure output';
+sub save-markdown {
+    my $markdown-output = '';
+
+    for @modules.sort({
+        $^a.bisected cmp $^b.bisected || $^a.name cmp $^b.name
+    }) {
+        next unless (my $result = .done ?? .done.result !! Unknown) == Fail;
+
+        $markdown-output ~= qq:to/EOM/.chomp;
+* [ ] [{ .name }](https://modules.raku.org/dist/{ .name }) – { $result }, { ''
+} Bisected: { .bisected }
+  <details><Summary>Old Output</summary>
+
+  ```
+{ .output-old.indent(2) }
+  ```
+  </details>
+  <details>
+  <summary>New Output</summary>
+
+  ```
+{ .output-new.indent(2) }
+  ```
+  </details>
+EOM
+
+        spurt $markdown-path, $markdown-output;
+    }
+}
+
+save-markdown;
 
 
 note ‘🥞🥞 Saving the json output’;
