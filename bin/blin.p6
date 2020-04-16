@@ -389,8 +389,7 @@ sub save-markdown {
         $^a.bisected cmp $^b.bisected || $^a.name cmp $^b.name
     }) {
         $markdown-output ~= qq:to/EOM/;
-* [ ] [{ .name }](https://modules.raku.org/dist/{ .name }) – { .done.result }, { ''
-} Bisected: { .bisected }
+* [ ] [{ .name }](https://modules.raku.org/dist/{ .name }) – { .done.result }, Bisected: { .bisected }
   <details><Summary>Old Output</summary>
 
   ```
