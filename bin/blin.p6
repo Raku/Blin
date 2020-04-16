@@ -390,7 +390,7 @@ sub save-markdown {
     }) {
         next unless (my $result = .done ?? .done.result !! Unknown) == Fail;
 
-        $markdown-output ~= qq:to/EOM/.chomp;
+        $markdown-output ~= qq:to/EOM/;
 * [ ] [{ .name }](https://modules.raku.org/dist/{ .name }) – { $result }, { ''
 } Bisected: { .bisected }
   <details><Summary>Old Output</summary>
