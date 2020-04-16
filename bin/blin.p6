@@ -385,13 +385,11 @@ note '🥞🥞 Saving the failure output';
 sub save-markdown {
     my $markdown-output = '';
 
-    for @modules.sort({
+    for @modules.grep(*.done.result == Fail).sort({
         $^a.bisected cmp $^b.bisected || $^a.name cmp $^b.name
     }) {
-        next unless (my $result = .done ?? .done.result !! Unknown) == Fail;
-
         $markdown-output ~= qq:to/EOM/;
-* [ ] [{ .name }](https://modules.raku.org/dist/{ .name }) – { $result }, { ''
+* [ ] [{ .name }](https://modules.raku.org/dist/{ .name }) – { .done.result }, { ''
 } Bisected: { .bisected }
   <details><Summary>Old Output</summary>
 
@@ -407,7 +405,6 @@ sub save-markdown {
   ```
   </details>
 EOM
-
         spurt $markdown-path, $markdown-output;
     }
 }
