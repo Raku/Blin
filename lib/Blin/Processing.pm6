@@ -401,7 +401,6 @@ sub test-module($full-commit-hash, $module,
                       ($testable ?? ‘--force-test’ !! ‘--/test’),
                       <--/depends --/test-depends --/build-depends>,
                       ‘install’,
-                      ($install ?? Empty !! ‘--dry’),
                       “--to=inst#$install-path”, $module.name,
                       :stdin(‘’), :$timeout, ENV => %tweaked-env, :!chomp;
         }
@@ -444,7 +443,7 @@ sub process-module(Module $module,
     my $new-result = test-module   $end-point-full, $module,
                                  :$zef-path, :$zef-config-path, :$timeout,
                                  :@always-unpacked, :$testable,
-                                 install => $module.needed;
+                                 :install;
     $module.output-new = $new-result<output>;
     spurt $module.install-path.IO.add(‘log-new’), $module.output-new;
     return $module.done.keep: $OK if alright $new-result; # don't even test the old one
