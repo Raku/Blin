@@ -7,6 +7,9 @@ use Whateverable::Config;
 use Whateverable::Output;
 use Whateverable::Running;
 
+use File::Temp;
+use File::Directory::Tree;
+
 unit module Blin::Processing;
 
 # Testing and Bisection
@@ -354,6 +357,14 @@ sub test-module($full-commit-hash, $module,
 
     build-exists $full-commit-hash;
     my $install-path = $module.install-path;
+
+    if not $install { # Install into a temp directory
+        $install-path = tempdir :!unlink;
+    }
+    LEAVE if not $install {
+        rmtree $_ with $install-path;
+    }
+
     mkdir $install-path;
 
     my @deps = gather $module.deps: True;
@@ -462,8 +473,6 @@ sub process-module(Module $module,
     }
 
     note “🥞🥞🥞 Bisecting $module.name()”;
-    use File::Temp;
-    use File::Directory::Tree;
     my $repo-cwd = tempdir :!unlink;
     LEAVE rmtree $_ with $repo-cwd;
     run :out(Nil), :err(Nil), <git clone>, $CONFIG<rakudo>, $repo-cwd;
