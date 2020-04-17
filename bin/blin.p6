@@ -33,7 +33,7 @@ unit sub MAIN(
 
 #| Where to pull source info from
 my @sources       = <
-    https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/p6c1.json
+    https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/p6c.json
     https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/cpan.json
 >; # TODO steal that from zef automatically
 
