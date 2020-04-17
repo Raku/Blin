@@ -38,7 +38,7 @@ my @sources       = <
 >; # TODO steal that from zef automatically
 
 #| Core modules that are ignored as dependencies
-my $ignored-deps  = <Test NativeCall Pod::To::Text Telemetry snapper>.Set;
+my $ignored-deps  = <Test NativeCall Pod::To::Text Telemetry snapper perl>.Set;
 
 #| Modules that should not be installed at all
 my $havoc-modules = ∅;
