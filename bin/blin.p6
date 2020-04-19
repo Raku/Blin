@@ -402,8 +402,8 @@ sub save-markdown {
   ```
   </details>
 EOM
-        spurt $markdown-path, $markdown-output;
     }
+    spurt $markdown-path, $markdown-output;
 }
 
 save-markdown;
