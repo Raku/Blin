@@ -387,21 +387,21 @@ sub save-markdown {
         $^a.bisected cmp $^b.bisected || $^a.name cmp $^b.name
     }) {
         $markdown-output ~= qq:to/EOM/;
-* [ ] [{ .name }](https://modules.raku.org/dist/{ .name }) – { .done.result }, Bisected: { .bisected }
-  <details><Summary>Old Output</summary>
+        * [ ] [{ .name }](https://modules.raku.org/dist/{ .name }) – { .done.result }, Bisected: { .bisected }
+          <details><Summary>Old Output</summary>
 
-  ```
-{ .output-old.indent(2) }
-  ```
-  </details>
-  <details>
-  <summary>New Output</summary>
+          ```
+        { .output-old.indent(2) }
+          ```
+          </details>
+          <details>
+          <summary>New Output</summary>
 
-  ```
-{ .output-new.indent(2) }
-  ```
-  </details>
-EOM
+          ```
+        { .output-new.indent(2) }
+          ```
+          </details>
+        EOM
     }
     spurt $markdown-path, $markdown-output;
 }
