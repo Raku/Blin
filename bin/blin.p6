@@ -6,6 +6,7 @@ use Blin::Module;
 use Blin::Processing;
 
 use Whateverable;
+use Whateverable::Bits;
 use Whateverable::Builds;
 use Whateverable::Config;
 use Whateverable::Running;
@@ -76,6 +77,7 @@ my $overview-path = $output-path.add: ‘overview’;
 my $markdown-path = $output-path.add: 'failures.md';
 my $dot-path      = $output-path.add: ‘overview.dot’;
 my $svg-path      = $output-path.add: ‘overview.svg’;
+my $png-path      = $output-path.add: ‘overview.png’;
 my $json-path     = $output-path.add: ‘data.json’;
 
 mkdir $output-path;
@@ -379,15 +381,22 @@ sub save-overview {
 save-overview;
 
 
-note '🥞🥞 Saving the failure output';
-sub save-markdown {
-    my $markdown-output = '';
+my @bisected = @modules.grep(*.done.result == Fail);
 
-    for @modules.grep(*.done.result == Fail).sort({
+note '🥞🥞 Saving the failure output';
+sub save-markdown { # XXX there is little to no escaping in this sub, but that's OK
+    sub module-link($module) {
+        “[{ $module.name }](https://modules.raku.org/dist/{ $module.name })”
+    }
+    my $markdown-output = ‘[Blin](https://github.com/Raku/Blin) results between ’
+                        ~    “$start-point ($start-point-full)”
+                        ~ “ and $end-point ($end-point-full):\n\n”;
+
+    for @bisected.sort({
         $^a.bisected cmp $^b.bisected || $^a.name cmp $^b.name
     }) {
         $markdown-output ~= qq:to/EOM/;
-        * [ ] [{ .name }](https://modules.raku.org/dist/{ .name }) – { .done.result }, Bisected: { .bisected }
+        * [ ] {module-link $_} – { .done.result }, Bisected: { .bisected }
           <details><Summary>Old Output</summary>
 
           ```
@@ -403,6 +412,29 @@ sub save-markdown {
           </details>
         EOM
     }
+
+    $markdown-output ~= qq:to/EOM/;
+    \n\n
+    | Status                    | Count |          Modules          |
+    | :------------------------ | :---: | :------------------------ |
+    EOM
+
+    for @modules.classify(*.done.result).sort(*.value.elems) {
+        my $links = .value > 20 ?? ‘⋯’ !! .value.sort(*.name).map({module-link $_}).join: ‘ ’;
+        $markdown-output ~= sprintf “| %-25s | %5s | %-25s |\n”, .key, +.value, $links;
+    }
+
+    $markdown-output ~= qq:to/EOM/;
+    \n\n
+    This run started on { timestampish } and finished {time-left now + (now - INIT now), :simple}.
+
+    <!--
+    Graph of bisected modules and their dependencies:
+
+    ⚠ Drag'n'drop the generated $png-path file here! ⚠
+    -->
+    EOM
+
     spurt $markdown-path, $markdown-output;
 }
 
@@ -428,7 +460,6 @@ note ‘🥞🥞 Saving the json output’;
 }
 
 note ‘🥞🥞 Saving the dot file’;
-my @bisected = @modules.grep(*.done.result == Fail);
 # Not algorithmically awesome, but will work just fine in practice
 my Set $to-visualize = @bisected.Set;
 $to-visualize ∪= (gather  .deps: True).Set for @bisected;
@@ -460,8 +491,9 @@ for $to-visualize.keys -> $module {
 
 if $dot {
     spurt $dot-path, “digraph \{\n    rankdir = BT;\n” ~ $dot ~ “\n}”;
-    note ‘🥞🥞 Creating an SVG image from the dot file’;
-    run <dot -T svg -o>, $svg-path, $dot-path # TODO -- ?
+    note ‘🥞🥞 Creating SVG/PNG images from the dot file’;
+    run <dot -T svg -o>, $svg-path, $dot-path; # TODO -- ?
+    run <dot -T png -o>, $png-path, $dot-path; # TODO -- ?
 } else {
     note ‘🥞🥞 No regressions found, dot file not saved’;
 }
