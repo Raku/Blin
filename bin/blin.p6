@@ -395,9 +395,11 @@ sub save-markdown { # XXX there is little to no escaping in this sub, but that's
                         ~    “$start-point ({commit-link $start-point-full})”
                         ~ “ and $end-point ({commit-link   $end-point-full}):\n\n”;
 
-
-    for @bisected.sort({
-        $^a.bisected cmp $^b.bisected || $^a.name cmp $^b.name
+    my %scores; # how many modules each commit list broke
+    %scores{.bisected}++ for @bisected;
+    for @bisected.sort({ %scores{$^a.bisected} cmp %scores{$^b.bisected}
+                         ||       $^a.bisected cmp $^b.bisected
+                         ||           $^a.name cmp $^b.name
     }) {
         $markdown-output ~= qq:to/EOM/;
         * [ ] {module-link $_} – { .done.result }, Bisected: { commit-link .bisected }
