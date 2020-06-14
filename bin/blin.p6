@@ -451,7 +451,7 @@ note ‘🥞🥞 Saving the json output’;
         #      … whatever…
         %json-data{$name}<version>     = ~.version;
         %json-data{$name}<status>      = ~$status;
-        %json-data{$name}<output>      = .output;
+        %json-data{$name}<output-new>  = .output-new;
     }
     use JSON::Fast;
     spurt $json-path, to-json %json-data;
