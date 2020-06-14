@@ -388,15 +388,19 @@ sub save-markdown { # XXX there is little to no escaping in this sub, but that's
     sub module-link($module) {
         “[{ $module.name }](https://modules.raku.org/dist/{ $module.name })”
     }
+    sub commit-link($bisected) {
+        $bisected.list.map({“[{ get-short-commit $_ }](https://github.com/rakudo/rakudo/commit/$_)”})
+    }
     my $markdown-output = ‘[Blin](https://github.com/Raku/Blin) results between ’
-                        ~    “$start-point ($start-point-full)”
-                        ~ “ and $end-point ($end-point-full):\n\n”;
+                        ~    “$start-point ({commit-link $start-point-full})”
+                        ~ “ and $end-point ({commit-link   $end-point-full}):\n\n”;
+
 
     for @bisected.sort({
         $^a.bisected cmp $^b.bisected || $^a.name cmp $^b.name
     }) {
         $markdown-output ~= qq:to/EOM/;
-        * [ ] {module-link $_} – { .done.result }, Bisected: { .bisected }
+        * [ ] {module-link $_} – { .done.result }, Bisected: { commit-link .bisected }
           <details><Summary>Old Output</summary>
 
           ```
