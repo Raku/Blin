@@ -445,15 +445,13 @@ note ‘🥞🥞 Saving the json output’;
 {
     my %json-data;
     for @modules {
-        my $status  = .done ?? .done.result !! Unknown;
-        my $output  = .output-new;
-        my $name    = .name;
+        my $status      = .done ?? .done.result !! Unknown;
+        my $name        = .name;
         # TODO uhh, there can be more than one entry with the same name…
         #      … whatever…
-        my $version = .version;
-        %json-data{$name}<version> = ~$version;
-        %json-data{$name}<status>  = ~$status;
-        %json-data{$name}<output>  = $output;
+        %json-data{$name}<version>     = ~.version;
+        %json-data{$name}<status>      = ~$status;
+        %json-data{$name}<output>      = .output;
     }
     use JSON::Fast;
     spurt $json-path, to-json %json-data;
