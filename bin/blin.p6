@@ -4,6 +4,8 @@ use v6.d.PREVIEW;
 
 use Blin::Module;
 use Blin::Processing;
+use Blin::Tester::Zef;
+use Blin::Tester::Pakku;
 
 use Whateverable;
 use Whateverable::Bits;
@@ -26,17 +28,22 @@ unit sub MAIN(
                       # now-failing modules.
     #| Number of seconds between printing the current status (default: 60.0)
     Rat :$heartbeat = 60.0,
+
+    #| Package manager used for testing
+    Str :$pm = 'zef',
     #| Additional scripts to be tested
     :$custom-script, # XXX Oh sausages! https://github.com/rakudo/rakudo/issues/2797
     #| Use this to test some specific modules (empty = whole ecosystem)
     *@specified-modules,
 );
 
+
+my $tester =  $pm ~~ 'zef'
+    ?? Blin::Tester::Zef.new
+    !! Blin::Tester::Pakku.new;
+
 #| Where to pull source info from
-my @sources       = <
-    https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/p6c.json
-    https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/cpan.json
->; # TODO steal that from zef automatically
+my @sources = $tester.sources;
 
 #| Core modules that are ignored as dependencies
 my $ignored-deps  = <Test NativeCall Pod::To::Text Telemetry snapper perl>.Set;
@@ -51,6 +58,14 @@ my $skip-tests = (
    # These seem to hang and leave some processes behind:
    ‘IO::Socket::Async::SSL’,
    ‘IRC::Client’,
+   ‘Perl6::Ecosystem’,           # eats memory
+   ‘Concurrent::BoundedChannel’, # hangs
+   ‘Net::FTP’,                   # hangs
+   ‘Syslog::Parse’,              # hangs
+   ‘Fcntl’,                      # hangs
+   ‘Selenium::WebDriver’,        # hangs
+   ‘WebService::Soundcloud’,     # hangs
+   ‘UNIX::Daemonize’,            # hangs
    # These were ignored by Toaster, but reasons are unknown:
    ‘HTTP::Server::Async’,
    ‘HTTP::Server::Threaded’,
@@ -61,10 +76,6 @@ my $skip-tests = (
    ‘Uzu’,
 ).Set;
 
-#| Where to install zef
-my $zef-path      = ‘data/zef’.IO;
-my $zef-config-path = ‘data/zef-config.json’.IO;
-my $zef-dumpster-path = ‘data/zef-data’.IO;
 #↑ XXX Trash pickup services are not working, delete the directory
 #↑     manually from time to time.
 #| Some kind of a timeout 😂
@@ -120,35 +131,6 @@ $start-point //= get-tags(‘2015-12-24’, :default()).tail;
 
 note “🥞 Will compare between $start-point and $end-point”;
 
-note ‘🥞 Ensuring zef checkout’;
-if $zef-path.d {
-    run :cwd($zef-path), <git pull>
-} else {
-    run <git clone https://github.com/ugexe/zef>, $zef-path
-}
-
-note ‘🥞 Creating a config file for zef’;
-{
-    run(:err, $zef-path.add(‘/bin/zef’), ‘--help’).err.slurp
-      .match: /^^CONFIGURATION \s* (.*?)$$/;
-
-    use JSON::Fast;
-    my $zef-config = from-json $0.Str.IO.slurp;
-
-    # Turn auto-update off
-    for $zef-config<Repository>.list {
-        next unless .<module> eq ‘Zef::Repository::Ecosystems’;
-        .<options><auto-update> = 0; # XXX why is this not a boolean?
-    }
-
-    $zef-config<RootDir>  = $zef-dumpster-path.absolute;
-    $zef-config<TempDir>  = $zef-dumpster-path.add(‘tmp’).absolute;
-    $zef-config<StoreDir> = $zef-dumpster-path.add(‘store’).absolute;
-
-    spurt $zef-config-path, to-json $zef-config;
-
-    run $zef-path.add(‘/bin/zef’), “--config-path=$zef-config-path”, ‘update’;
-}
 
 note ‘🥞 Testing start and end points’;
 $start-point-full = to-full-commit $start-point;
@@ -338,7 +320,7 @@ react { # actual business here
                 process-module $module,
                                :$deflap,
                                :$start-point-full, :$end-point-full,
-                               :$zef-path, :$zef-config-path, :$timeout,
+                               :$tester, :$timeout,
                                :@always-unpacked,
                                testable => $module.name ∉ $skip-tests,
                 ;
