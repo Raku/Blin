@@ -9,7 +9,7 @@ has $.output-failed;
 has @.sources;
 
 
-submethod BUILD ( ) {
+submethod TWEAK ( ) {
 
     #| Where to install pakku
     my $pakku-path = ‘data/pakku’.IO;

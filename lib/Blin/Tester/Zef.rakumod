@@ -7,8 +7,7 @@ has $!zef-config-path;
 has @.sources;
 
 
-
-submethod BUILD ( ) {
+submethod TWEAK ( ) {
 
     #| Where to install zef
     my $zef-path          = ‘data/zef’.IO;
