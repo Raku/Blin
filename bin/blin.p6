@@ -59,13 +59,6 @@ my $skip-tests = (
    ‘IO::Socket::Async::SSL’,
    ‘IRC::Client’,
    ‘Perl6::Ecosystem’,           # eats memory
-   ‘Concurrent::BoundedChannel’, # hangs
-   ‘Net::FTP’,                   # hangs
-   ‘Syslog::Parse’,              # hangs
-   ‘Fcntl’,                      # hangs
-   ‘Selenium::WebDriver’,        # hangs
-   ‘WebService::Soundcloud’,     # hangs
-   ‘UNIX::Daemonize’,            # hangs
    # These were ignored by Toaster, but reasons are unknown:
    ‘HTTP::Server::Async’,
    ‘HTTP::Server::Threaded’,
