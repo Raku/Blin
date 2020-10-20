@@ -18,7 +18,8 @@
         "File::Temp",
         "JSON::Fast",
         "Whateverable",
-        "Zef"
+        "Zef",
+        "Pakku"
     ],
     "resources"   : [ ],
     "source-url"  : "https://github.com/Raku/Blin.git"
