@@ -347,7 +347,8 @@ a813f251ae7500c04afa583b2c01ffce23132997
 #| Test some $module on some commit ($full-commit-hash)
 sub test-module($full-commit-hash, $module,
                 :$install=False,
-                :$zef-path!, :$zef-config-path, :$timeout!,
+                :$timeout!,
+                :$tester!,
                 :@always-unpacked, :$testable=True) is export {
 
     if $full-commit-hash eq @annoying-revisions.any {
@@ -375,7 +376,7 @@ sub test-module($full-commit-hash, $module,
         my %tweaked-env = %*ENV;
         %tweaked-env<PATH> = join ‘:’, $binary-path.parent, (%tweaked-env<PATH> // Empty);
         %tweaked-env<PERL6LIB> = $install-path.IO.absolute; # dump any precomp files here
-        %tweaked-env<PERL6LIB> ~= ‘,’ ~ $zef-path.add: ‘/lib’;
+        %tweaked-env<PERL6LIB> ~= ‘,’ ~ $tester.path.add: ‘/lib’;
         %tweaked-env<PERL6LIB> = join ‘,’, %tweaked-env<PERL6LIB>, # XXX looks fragile
                                    |@deps.map: { ‘inst#’ ~ .install-path.IO.absolute };
         %tweaked-env<ALL_TESTING>     = 1;
@@ -394,19 +395,14 @@ sub test-module($full-commit-hash, $module,
                       $module.test-script,
                       :stdin(‘’), :$timeout, ENV => %tweaked-env, :!chomp;
         } else { # normal module
+
             $result = get-output $binary-path,
                       ‘--’,
-                      $zef-path.add(‘/bin/zef’),
-                      “--config-path=$zef-config-path”,
-                      <--verbose --force-build --force-install>,
-                      ($testable ?? ‘--force-test’ !! ‘--/test’),
-                      <--/depends --/test-depends --/build-depends>,
-                      ‘install’,
-                      “--to=inst#$install-path”, $module.name,
+                      $tester.test-command( :$testable, :$install-path, module-name => $module.name ),
                       :stdin(‘’), :$timeout, ENV => %tweaked-env, :!chomp;
         }
         # XXX ↓ this workaround looks stupid
-        $result<exit-code> = 1 if $result<output>.contains: ‘[FAIL]:’;
+        $result<exit-code> = 1 if $result<output>.contains: $tester.output-failed;
         $result
     }
 
@@ -423,7 +419,8 @@ sub test-module($full-commit-hash, $module,
 sub process-module(Module $module,
                    :$deflap!,
                    :$start-point-full!, :$end-point-full!,
-                   :$zef-path!, :$zef-config-path, :$timeout!,
+                   :$timeout!,
+                   :$tester!,
                    :@always-unpacked,
                    :$testable=True,
                   ) is export {
@@ -442,7 +439,8 @@ sub process-module(Module $module,
 
     note “🥞🥞🥞 Testing $module.name() (new)”; # (new revision, end point)
     my $new-result = test-module   $end-point-full, $module,
-                                 :$zef-path, :$zef-config-path, :$timeout,
+                                 :$timeout,
+                                 :$tester,
                                  :@always-unpacked, :$testable,
                                  :install;
     $module.output-new = $new-result<output>;
@@ -451,7 +449,8 @@ sub process-module(Module $module,
 
     note “🥞🥞🥞 Testing $module.name() (old)”; # (old revision, start point)
     my $old-result = test-module $start-point-full, $module,
-                                 :$zef-path, :$zef-config-path, :$timeout,
+                                 :$timeout,
+                                 :$tester,
                                  :@always-unpacked, :$testable;
     $module.output-old = $old-result<output>;
     spurt $module.install-path.IO.add(‘log-old’), $module.output-old;
@@ -463,7 +462,8 @@ sub process-module(Module $module,
         # Be careful when touching this piece of code. If you break
         # it, all regressions will appear as flappers
         if not alright test-module $start-point-full, $module,
-                                   :$zef-path, :$zef-config-path, :$timeout,
+                                   :$timeout,
+                                   :$tester,
                                    :@always-unpacked, :$testable {
             return $module.done.keep: Flapper
         }
@@ -485,7 +485,8 @@ sub process-module(Module $module,
     my $init-result = get-output cwd => $repo-cwd, <git bisect new>, $end-point-full;
 
     my &runner = -> :$current-commit, *%_ { test-module $current-commit, $module,
-                                            :$zef-path, :$zef-config-path, :$timeout,
+                                            :$timeout,
+                                            :$tester,
                                             :@always-unpacked, :$testable
                                           };
     my $bisect-result = run-bisect &runner, :$repo-cwd,
