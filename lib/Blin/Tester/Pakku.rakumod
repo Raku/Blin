@@ -8,6 +8,7 @@ has @.sources;
 
 submethod TWEAK ( ) {
 
+    note ‘🥞 Installing Pakku ’;
     my $pakku-src  = ‘data/pakku-src’.IO;
 
     if $pakku-src.d {
@@ -16,11 +17,9 @@ submethod TWEAK ( ) {
         run <git clone https://github.com/hythm7/Pakku.git>, $pakku-src
     }
 
-
     #| Where to install pakku
     my $pakku-path = ‘data/pakku’.IO;
 
-    note ‘🥞 Installing Pakku ’;
     run "$pakku-src/tools/install-pakku.raku", "--dest=$pakku-path"; 
 
     # using recman meta source here
