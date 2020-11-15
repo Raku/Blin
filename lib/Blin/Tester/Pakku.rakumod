@@ -1,6 +1,3 @@
-use File::Temp;
-
-
 unit class Blin::Tester::Pakku;
 
 has $.path;
@@ -11,22 +8,23 @@ has @.sources;
 
 submethod TWEAK ( ) {
 
+    note ‘🥞 Installing Pakku ’;
+    my $pakku-src  = ‘data/pakku-src’.IO;
+
+    if $pakku-src.d {
+        run :cwd($pakku-src), <git pull>
+    } else {
+        run <git clone https://github.com/hythm7/Pakku.git>, $pakku-src
+    }
+
     #| Where to install pakku
     my $pakku-path = ‘data/pakku’.IO;
 
-    note ‘🥞 Ensuring Pakku ’;
-    unless $pakku-path.d {
-
-        my $pakku-src  = tempdir;
-
-        run "git", "clone", "https://github.com/hythm7/Pakku", $pakku-src; 
-        run "$pakku-src/tools/install-pakku.raku", "--dest=$pakku-path"; 
-    } 
+    run "$pakku-src/tools/install-pakku.raku", "--dest=$pakku-path"; 
 
     # using recman meta source here
     # can be replaced with zef sources
     @!sources       = <http://recman.pakku.org/meta/42>;
-
 
     $!path = $pakku-path;
 
