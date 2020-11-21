@@ -36,7 +36,7 @@ submethod TWEAK ( ) {
 
 method test-command( ::?CLASS:D: :$testable!, :$install-path!, :$module-name! ) {
     $!binary,
-    "verbose trace",
+    "verbose info",
     "yolo",
     "add",
     "force",
