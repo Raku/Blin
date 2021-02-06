@@ -23,7 +23,7 @@ submethod TWEAK ( ) {
 
     note ‘🥞 Creating a config file for zef’;
     {
-        run(:err, $zef-path.add(‘/bin/zef’), ‘--help’).err.slurp
+        run(:err, 'raku', "-I $zef-path/lib", $zef-path.add(‘/bin/zef’), ‘--help’).err.slurp
           .match: /^^CONFIGURATION \s* (.*?)$$/;
 
         use JSON::Fast;
