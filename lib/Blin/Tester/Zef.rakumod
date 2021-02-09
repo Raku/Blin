@@ -33,6 +33,7 @@ submethod TWEAK ( ) {
         for $zef-config<Repository>.list {
             next unless .<module> eq ‘Zef::Repository::Ecosystems’;
             .<options><auto-update> = 0; # XXX why is this not a boolean?
+            @!sources.push(.<options><mirrors>.head);
         }
 
         $zef-config<RootDir>  = $zef-dumpster-path.absolute;
@@ -44,12 +45,6 @@ submethod TWEAK ( ) {
         run $*EXECUTABLE.absolute, ‘-I’, $zef-path, $zef-path.add(‘/bin/zef’), “--config-path=$zef-config-path”, ‘update’;
 
     }
-
-    @!sources       = <
-      https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/p6c.json
-      https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/cpan.json
->;   # TODO steal that from zef automatically
-
 
     $!zef-config-path = $zef-config-path;
     $!path = $zef-path;
