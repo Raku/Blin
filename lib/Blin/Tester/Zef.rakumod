@@ -23,7 +23,7 @@ submethod TWEAK ( ) {
 
     note ‘🥞 Creating a config file for zef’;
     {
-        run(:err, $zef-path.add(‘/bin/zef’), ‘--help’).err.slurp
+        run(:err, $*EXECUTABLE.absolute, ‘-I’, $zef-path, $zef-path.add(‘/bin/zef’), ‘--help’).err.slurp
           .match: /^^CONFIGURATION \s* (.*?)$$/;
 
         use JSON::Fast;
@@ -41,7 +41,7 @@ submethod TWEAK ( ) {
 
         spurt $zef-config-path, to-json $zef-config;
 
-        run $zef-path.add(‘/bin/zef’), “--config-path=$zef-config-path”, ‘update’;
+        run $*EXECUTABLE.absolute, ‘-I’, $zef-path, $zef-path.add(‘/bin/zef’), “--config-path=$zef-config-path”, ‘update’;
 
     }
 
@@ -59,6 +59,9 @@ submethod TWEAK ( ) {
 }
 
 method test-command( ::?CLASS:D: :$testable!, :$install-path!, :$module-name! ) {
+    $*EXECUTABLE.absolute,
+    ‘-I’,
+    $!path,
     $!binary,
     “--config-path=$!zef-config-path”,
     <--verbose --force-build --force-install>,
