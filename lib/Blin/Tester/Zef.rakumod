@@ -54,16 +54,12 @@ submethod TWEAK ( ) {
 }
 
 method test-command( ::?CLASS:D: :$testable!, :$install-path!, :$module-name! ) {
-    $*EXECUTABLE.absolute,
-    ‘-I’,
-    $!path,
-    $!binary,
+    $!binary.absolute,
     “--config-path=$!zef-config-path”,
-    <--verbose --force-build --force-install>,
+    |<--verbose --force-build --force-install>,
     ($testable ?? ‘--force-test’ !! ‘--/test’),
-    <--/depends --/test-depends --/build-depends>,
+    |<--/depends --/test-depends --/build-depends>,
     ‘install’,
     “--to=inst#$install-path”,
     $module-name,
 }
-
