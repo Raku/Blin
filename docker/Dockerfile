@@ -10,14 +10,13 @@ COPY . /Blin/
 ENV LANG='C.UTF-8'
 ENV DEBIAN_FRONTEND='noninteractive'
 ENV TZ='Europe/Brussels'
-ENV pkgs_first="gpg ca-certificates"
+ENV pkgs_first="gpg ca-certificates debian-keyring debian-archive-keyring apt-transport-https curl"
 ENV PATH="/opt/rakudo-pkg/bin:/opt/rakudo-pkg/share/perl6/bin:/mnt/bin:${PATH}"
 ENV PERL6LIB="/mnt/lib"
 
 RUN apt-get update && apt-get install -y $pkgs_first && \
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61 && \
-echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs buster main" > \
-/etc/apt/sources.list.d/rakudo-pkg.list
+    curl -1sLf 'https://dl.cloudsmith.io/public/nxadm-pkgs/rakudo-pkg/gpg.0DD4CA7EB1C6CC6B.key' | apt-key add - && \
+    curl -1sLf 'https://dl.cloudsmith.io/public/nxadm-pkgs/rakudo-pkg/config.deb.txt?distro=debian&codename=buster' > /etc/apt/sources.list.d/nxadm-pkgs-rakudo-pkg.list
 RUN mkdir -p /usr/share/man/man1 && apt-get update && set -xv ;\
 apt-get install -y $(cat /Blin/docker/pkg-dependencies |grep -v '^#')
 RUN echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config
