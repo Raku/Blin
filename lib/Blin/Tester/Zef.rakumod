@@ -30,10 +30,12 @@ submethod TWEAK ( ) {
         my $zef-config = from-json $0.Str.IO.slurp;
 
         # Turn auto-update off
-        for $zef-config<Repository>.list {
-            next unless .<module> eq ‘Zef::Repository::Ecosystems’;
-            .<options><auto-update> = 0; # XXX why is this not a boolean?
-            @!sources.push(.<options><mirrors>.head);
+        for $zef-config<Repository>.list -> $arr {
+            for @$arr {
+                next unless .<module> eq ‘Zef::Repository::Ecosystems’;
+                .<options><auto-update> = 0; # XXX why is this not a boolean?
+                @!sources.push(.<options><mirrors>.head);
+            }
         }
 
         $zef-config<RootDir>  = $zef-dumpster-path.absolute;
