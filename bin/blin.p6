@@ -169,23 +169,31 @@ for @sources {
     my $json-data = run(:out, <curl -->, $_).out.slurp;
     my $json = from-json $json-data;
     for @$json {
-        my Module $module .= new:
-            name    => .<name>,
-            version => Version.new(.<version>) // v0,
-            depends => ([∪]
-                        (.<      depends> // ∅).Set,
-                        (.< test-depends> // ∅).Set,
-                        (.<build-depends> // ∅).Set,
-                       ) ∖ $ignored-deps,
-        ;
-        if $module.name ∈ $havoc-modules {
-            note “🥞🥞 Module {$module.name} is ignored because it causes havoc”;
-            next
-        }
+        use Zef::Distribution; # use Zef::Distribution for parsing complicated dependency specifications
+        with try Zef::Distribution.new(|%($_)) -> $dist {
+            state @ignore-specs = $ignored-deps.keys.map({ Zef::Distribution::DependencySpecification.new($_) });
+            my @depends =
+                map  -> $spec { $spec.identity },
+                grep -> $spec { not @ignore-specs.grep({ $_.spec-matcher($spec) }) },
+                slip($dist.depends-specs),
+                slip($dist.test-depends-specs),
+                slip($dist.build-depends-specs),
+            ;
 
-        @modules.push: $module;
-        %lookup{$module.name}.push: $module;
-        %lookup{.key}.push: $module for .<provides>.pairs; # practically aliases
+            my Module $module .= new:
+                name    => $dist.meta<name>,
+                version => Version.new($dist.meta<version>) // v0,
+                depends => @depends.Set,
+            ;
+            if $module.name ∈ $havoc-modules {
+                note “🥞🥞 Module {$module.name} is ignored because it causes havoc”;
+                next
+             }
+
+            @modules.push: $module;
+            %lookup{$module.name}.push: $module;
+            %lookup{.key}.push: $module for .<provides>.pairs; # practically aliases
+        }
     }
 }
 

@@ -11,7 +11,7 @@ ENV LANG='C.UTF-8'
 ENV DEBIAN_FRONTEND='noninteractive'
 ENV TZ='Europe/Brussels'
 ENV pkgs_first="gpg ca-certificates debian-keyring debian-archive-keyring apt-transport-https curl"
-ENV PATH="/opt/rakudo-pkg/bin:/opt/rakudo-pkg/share/perl6/bin:/mnt/bin:${PATH}"
+ENV PATH="/opt/rakudo-pkg/var/zef/bin:/opt/rakudo-pkg/bin:/opt/rakudo-pkg/share/perl6/bin:/mnt/bin:${PATH}"
 ENV PERL6LIB="/mnt/lib"
 
 RUN apt-get update && apt-get install -y $pkgs_first && \
@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y $pkgs_first && \
 RUN mkdir -p /usr/share/man/man1 && apt-get update && set -xv ;\
 apt-get install -y $(cat /Blin/docker/pkg-dependencies |grep -v '^#')
 RUN echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+RUN /opt/rakudo-pkg/bin/install-zef
 RUN cd /Blin && zef install --verbose --deps-only .
 
 ENTRYPOINT [ "/Blin/docker/entrypoint.sh" ]

@@ -24,6 +24,7 @@ libgit2-dev
 libglfw3
 libgtk-3-dev
 libgumbo-dev
+libgsl-dev
 libhidapi-dev
 libidn11-dev
 libidn2-dev
