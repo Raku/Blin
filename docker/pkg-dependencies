@@ -10,7 +10,7 @@ libarchive13
 libbrotli-dev
 libcairo2-dev
 libcmark-dev
-libcmark0
+libcmark0.30.2
 libcurl4
 libcurl4-openssl-dev
 libdatrie-dev
@@ -43,7 +43,7 @@ libopencv-dev
 libperl-dev
 libprimesieve-dev
 libqrencode4
-libreadline7
+libreadline8
 libsdl-image1.2-dev
 libsdl-mixer1.2-dev
 libsdl1.2-dev
@@ -59,9 +59,9 @@ libxslt-dev
 libxxhash-dev
 libyaml-dev
 libzmq3-dev
-llvm-7-dev
+llvm-14-dev
 lrzip
-python-jupyter-core
+python3-jupyter-core
 python3-jupyter-core
 rakudo-pkg
 zstd

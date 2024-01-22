@@ -49,7 +49,7 @@ my @sources = $tester.sources;
 my $ignored-deps  = <Test NativeCall Pod::To::Text Telemetry snapper perl>.Set;
 
 #| Modules that should not be installed at all
-my $havoc-modules = ∅;
+my $havoc-modules = ('November', 'Tika', 'Test::Async').Set;
 
 #| Modules with tests that we don't want to run
 my $skip-tests = (
