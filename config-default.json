@@ -11,37 +11,13 @@
             "archives-path": "./data/builds/moarvm"
         }
     },
+
     "builds-location"          : "/tmp/whateverable/",
     "sandbox-path"             : "./sandbox",
 
-    "source" : "https://github.com/Raku/whateverable",
-    "wiki"   : "https://github.com/Raku/whateverable/wiki/",
-
-    "message-limit" :   390,
-    "gist-limit"    : 10000,
-    "commits-limit" :   500,
-    "cave"          : "#whateverable",
-    "caregivers"    : [ "AlexDaniel", "MasterDuke" ],
-
-    "mothership": "https://whateverable.6lang.org",
-
-    "github": {
-        "login": "",
-        "access_token": ""
-    },
-    "irc": {
-        "login": "",
-        "password": ""
-    },
-    "buildable": {
-        "host" : "0.0.0.0",
-        "port" : 42435
-    },
     "bisectable": {
         "commit-link" : "https://github.com/rakudo/rakudo/commit",
         "build-lock"  : "./lock",
         "trim-chars"  : 2000
-    },
-
-    "default-stdin": ""
+    }
 }
