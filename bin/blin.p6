@@ -78,7 +78,7 @@ my $semaphore;
 
 my $output-path   = ‘output’.IO;
 my $overview-path = $output-path.add: ‘overview’;
-my $markdown-path = $output-path.add: 'failures.md';
+my $markdown-path = $output-path.add: ‘failures.md’;
 my $dot-path      = $output-path.add: ‘overview.dot’;
 my $svg-path      = $output-path.add: ‘overview.svg’;
 my $png-path      = $output-path.add: ‘overview.png’;
