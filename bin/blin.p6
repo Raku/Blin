@@ -21,13 +21,13 @@ unit sub MAIN(
     #| Number of threads to use (initialized to the output of `nproc` if unset)
     Int :$nproc is copy,
     #| Thread number multiplier (default: 1.0)
-    Rat :$nproc-multiplier = 1.0,
+    Rat() :$nproc-multiplier = 1.0,
     #| Number of extra runs for regressed modules (default: 4)
     Int :$deflap = 4, # Can be really high because generally we are
                       # not expecting a large fallout with many
                       # now-failing modules.
     #| Number of seconds between printing the current status (default: 60.0)
-    Rat :$heartbeat = 60.0,
+    Rat() :$heartbeat = 60.0,
 
     #| Package manager used for testing
     Str :$pm = 'zef',
