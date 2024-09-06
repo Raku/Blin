@@ -425,8 +425,6 @@ sub process-module(Module $module,
                    :$testable=True,
                   ) is export {
 
-    my $perl6lib = $module.depends.keys.map(*.install-path).join: ‘,’;
-
     my &alright = -> $result {
         if $result<signal> ≠ 0 {
             # Huh, that means Zef itself segfaulted.
