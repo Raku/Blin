@@ -375,10 +375,9 @@ sub test-module($full-commit-hash, $module,
         my $binary-path = $path.IO.add: ‘bin/perl6’;
         my %tweaked-env = %*ENV;
         %tweaked-env<PATH> = join ‘:’, $binary-path.parent, (%tweaked-env<PATH> // Empty);
-        %tweaked-env<PERL6LIB> = $install-path.IO.absolute; # dump any precomp files here
-        %tweaked-env<RAKULIB> := %tweaked-env<PERL6LIB>;
-        %tweaked-env<PERL6LIB> ~= ‘,’ ~ $tester.path.add: ‘/lib’;
-        %tweaked-env<PERL6LIB> = join ‘,’, %tweaked-env<PERL6LIB>, # XXX looks fragile
+        %tweaked-env<RAKULIB> = $install-path.IO.absolute; # dump any precomp files here
+        %tweaked-env<RAKULIB> ~= ‘,’ ~ $tester.path.add: ‘/lib’;
+        %tweaked-env<RAKULIB> = join ‘,’, %tweaked-env<RAKULIB>, # XXX looks fragile
                                    |@deps.map: { ‘inst#’ ~ .install-path.IO.absolute };
         %tweaked-env<ALL_TESTING>     = 1;
         %tweaked-env<NETWORK_TESTING> = 1;

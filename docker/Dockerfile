@@ -12,7 +12,7 @@ ENV DEBIAN_FRONTEND='noninteractive'
 ENV TZ='Europe/Brussels'
 ENV pkgs_first="gpg ca-certificates debian-keyring debian-archive-keyring apt-transport-https curl vim"
 ENV PATH="/opt/rakudo-pkg/var/zef/bin:/opt/rakudo-pkg/bin:/opt/rakudo-pkg/share/perl6/bin:/mnt/bin:${PATH}"
-ENV PERL6LIB="/mnt/lib"
+ENV RAKULIB="/mnt/lib"
 
 RUN apt-get update && apt-get install -y $pkgs_first && \
     curl -1sLf 'https://dl.cloudsmith.io/public/nxadm-pkgs/rakudo-pkg/gpg.0DD4CA7EB1C6CC6B.key' |  gpg --dearmor > /usr/share/keyrings/nxadm-pkgs-rakudo-pkg-archive-keyring.gpg && \

@@ -41,13 +41,13 @@ Currently it is supposed to run only on 64-bit linux systems.
 If you want to test one or more modules:
 
 ```bash
-PERL6LIB=lib bin/blin.p6 SomeModuleHere AnotherModuleHere
+RAKULIB=lib bin/blin.p6 SomeModuleHere AnotherModuleHere
 ```
 
 Here is a more practical example:
 
 ```bash
-time PERL6LIB=lib bin/blin.p6 --old=2018.06 --new=2018.09 Foo::Regressed Foo::Regressed::Very Foo::Dependencies::B-on-A
+time RAKULIB=lib bin/blin.p6 --old=2018.06 --new=2018.09 Foo::Regressed Foo::Regressed::Very Foo::Dependencies::B-on-A
 ```
 
 You can also test arbitrary scripts. The code can depend on modules,
@@ -78,7 +78,7 @@ is a local Bisectable.
 If you want to test the whole ecosystem:
 
 ```bash
-time PERL6LIB=lib bin/blin.p6
+time RAKULIB=lib bin/blin.p6
 ```
 
 Estimated time to test the whole ecosystem with 24 cores is ≈60 minutes.
