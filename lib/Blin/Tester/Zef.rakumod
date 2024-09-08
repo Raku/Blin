@@ -38,7 +38,6 @@ submethod TWEAK ( ) {
             }
         }
 
-        $zef-config<RootDir>  = $zef-dumpster-path.absolute;
         $zef-config<TempDir>  = $zef-dumpster-path.add(‘tmp’).absolute;
         $zef-config<StoreDir> = $zef-dumpster-path.add(‘store’).absolute;
 
