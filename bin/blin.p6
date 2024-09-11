@@ -67,6 +67,7 @@ my $skip-tests = (
    ‘Time::Duration’,
    ‘Toaster’,
    ‘Uzu’,
+   ‘SOD’, # triggers https://github.com/ugexe/zef/issues/569
 ).Set;
 
 #↑ XXX Trash pickup services are not working, delete the directory
