@@ -473,7 +473,7 @@ sub process-module(Module $module,
     note “🥞🥞🥞 Bisecting $module.name()”;
     my $repo-cwd = tempdir :!unlink;
     LEAVE rmtree $_ with $repo-cwd;
-    run :out(Nil), :err(Nil), <git clone>, $CONFIG<rakudo>, $repo-cwd;
+    run :out(Nil), :err(Nil), <git clone>, $CONFIG<projects><rakudo-moar><repo-origin>, $repo-cwd;
 
     my $bisect-start = get-output cwd => $repo-cwd, <git bisect start>;
     my $bisect-old   = get-output cwd => $repo-cwd, <git bisect old>, $start-point-full;
