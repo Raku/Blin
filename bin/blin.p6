@@ -1,6 +1,6 @@
 #!/usr/bin/env perl6
 
-use v6.d.PREVIEW;
+use v6.d;
 
 use Blin::Module;
 use Blin::Processing;
