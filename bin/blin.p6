@@ -284,6 +284,7 @@ start { # This is just to print something to the terminal regularly
             my $total  = +@modules;
             my @undone = eager @modules.grep: *.done.not;
             my $str    = “⏳ {$total - @undone} out of $total modules processed”;
+            $str      ~= “ ({(($total-@undone)/$total*1_00_00).Int/100}%)”;
             $str      ~= ‘ (left: ’ ~ @undone».name ~ ‘)’ if @undone ≤ 5;
             note $str;
             done unless @undone;
