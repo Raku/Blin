@@ -16,9 +16,9 @@ use Whateverable::Running;
 unit sub MAIN(
     #| Old revision (initialized to the last release if unset)
     Str :old($start-point) is copy,
-    #| New revision (default: HEAD)
+    #| New revision
     Str :new($end-point) = ‘HEAD’,
-    #| Number of threads to use (initialized to the output of `nproc` if unset)
+    #| Number of threads to use ({Kernel.cpu-cores} if unset)
     Int :$nproc is copy,
     #| Thread number multiplier (default: 1.0)
     Rat() :$nproc-multiplier = 1.0,
@@ -113,7 +113,7 @@ my $save-lock = Lock.new; # to eliminate miniscule chance of racing when saving
 
 note ‘🥞 Prep’;
 
-$nproc //= ($nproc-multiplier × +run(:out, ‘nproc’).out.slurp).Int;
+$nproc //= ($nproc-multiplier × Kernel.cpu-cores).Int;
 $semaphore = Semaphore.new: $nproc.Int;
 
 note “🥞 Will use up to $nproc threads for testing modules”;
