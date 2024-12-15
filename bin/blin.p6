@@ -185,6 +185,7 @@ for @sources {
                 name    => $dist.meta<name>,
                 version => Version.new($dist.meta<version>) // v0,
                 depends => @depends.Set,
+               auth    => $dist.meta<auth>,
             ;
             if $module.name ∈ $havoc-modules {
                 note “🥞🥞 Module {$module.name} is ignored because it causes havoc”;
@@ -371,7 +372,7 @@ my @bisected = @modules.grep(*.done.result == Fail);
 note '🥞🥞 Saving the failure output';
 sub save-markdown { # XXX there is little to no escaping in this sub, but that's OK
     sub module-link($module) {
-        “[{ $module.name }](https://modules.raku.org/dist/{ $module.name })”
+        “[{ $module.name }](https://raku.land/{ $module.auth }/{ $module.name })”
     }
     sub commit-link($bisected) {
         $bisected.list.map({“[{ get-short-commit $_ }](https://github.com/rakudo/rakudo/commit/$_)”})

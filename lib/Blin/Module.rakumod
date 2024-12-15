@@ -2,6 +2,7 @@ unit class Blin::Module is rw is export;
 
 has Str     $.name;
 has Version $.version;
+has         $.auth;
 has Set     $.depends;
 has Set     $.rdepends;
 has Bool    $.needed = False;
