@@ -46,7 +46,7 @@ my $tester =  $pm ~~ 'zef'
 my @sources = $tester.sources;
 
 #| Core modules that are ignored as dependencies
-my $ignored-deps  = <Test NativeCall Pod::To::Text Telemetry snapper perl>.Set;
+my $ignored-deps  = <Test NativeCall Pod::To::Text Telemetry snapper perl CORE>.Set;
 
 #| Modules that should not be installed at all
 my $havoc-modules = ('November', 'Tika').Set;
