@@ -16,8 +16,7 @@ has Str     $.output-new;
 has IO      $.test-script;
 
 method handle {
-    # TODO surely we can do better to ensure it won't clash
-    $.name ~ ‘_’ ~ $.version
+    ($.name, $.auth, $.version).join(‘_’);
 }
 
 method install-path {
