@@ -1,5 +1,7 @@
 unit class Blin::Tester::Pakku;
 
+use Blin::Debug;
+
 has $.path;
 has $.binary;
 has $.output-failed;
@@ -8,7 +10,7 @@ has @.sources;
 
 submethod TWEAK ( ) {
 
-    note ‘🥞 Installing Pakku ’;
+    debug ‘Installing Pakku’;
     my $pakku-src  = ‘data/pakku-src’.IO;
 
     if $pakku-src.d {
