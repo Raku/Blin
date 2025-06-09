@@ -1,5 +1,7 @@
 unit class Blin::Tester::Zef;
 
+use Blin::Debug;
+
 has $.path;
 has $.binary;
 has $.output-failed;
@@ -14,14 +16,14 @@ submethod TWEAK ( ) {
     my $zef-config-path   = ‘data/zef-config.json’.IO;
     my $zef-dumpster-path = ‘data/zef-data’.IO;
     #↑ XXX Trash pickup services are not working, delete the directory
-    note ‘🥞 Ensuring zef checkout’;
+    debug ‘Ensuring zef checkout’;
     if $zef-path.d {
         run :cwd($zef-path), <git pull>
     } else {
         run <git clone https://github.com/ugexe/zef>, $zef-path
     }
 
-    note ‘🥞 Creating a config file for zef’;
+    debug ‘Creating a config file for zef’;
     {
         run(:err, $*EXECUTABLE.absolute, ‘-I’, $zef-path, $zef-path.add(‘/bin/zef’), ‘--help’).err.slurp
           .match: /^^CONFIGURATION \s* (.*?)$$/;
@@ -43,7 +45,8 @@ submethod TWEAK ( ) {
 
         spurt $zef-config-path, to-json $zef-config;
 
-        run $*EXECUTABLE.absolute, ‘-I’, $zef-path, $zef-path.add(‘/bin/zef’), “--config-path=$zef-config-path”, ‘update’;
+	debug "Temporarily disabled zef update";
+	#run $*EXECUTABLE.absolute, ‘-I’, $zef-path, $zef-path.add(‘/bin/zef’), “--config-path=$zef-config-path”, ‘update’;
 
     }
 
