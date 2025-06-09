@@ -174,9 +174,10 @@ for @sources {
 
             my Module $module .= new:
                 name    => $dist.meta<name>,
-                version => Version.new($dist.meta<version>) // v0,
+                version => $dist.meta<version> ?? Version.new($dist.meta<version>) !! v0,
+                api     => $dist.meta<api> ?? Version.new($dist.meta<api>) !! v0,
                 depends => @depends.Set,
-               auth    => $dist.meta<auth>,
+                auth    => $dist.meta<auth>,
             ;
             if $module.name ∈ $havoc-modules {
                 debug “Module {$module.name} is ignored because it causes havoc”, 2;
