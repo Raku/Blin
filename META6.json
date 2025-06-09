@@ -11,16 +11,14 @@
         "Blin::Debug"         : "lib/Blin/Debug.rakumod",
         "Blin::Module"        : "lib/Blin/Module.rakumod",
         "Blin::Processing"    : "lib/Blin/Processing.rakumod",
-        "Blin::Tester::Zef"   : "lib/Blin/Tester/Zef.rakumod",
-        "Blin::Tester::Pakku" : "lib/Blin/Tester/Pakku.rakumod"
+        "Blin::Tester::Zef"   : "lib/Blin/Tester/Zef.rakumod"
     },
     "depends"     : [
         "File::Directory::Tree",
         "File::Temp",
         "JSON::Fast",
         "Whateverable",
-        "Zef",
-        "Pakku"
+        "Zef"
     ],
     "resources"   : [ ],
     "source-url"  : "https://github.com/Raku/Blin.git"
