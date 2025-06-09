@@ -3,6 +3,7 @@ unit class Blin::Module is rw is export;
 has Str     $.name;
 has Version $.version;
 has         $.auth;
+has         $.api;
 has Set     $.depends;
 has Set     $.rdepends;
 has Bool    $.needed = False;
@@ -16,7 +17,7 @@ has Str     $.output-new;
 has IO      $.test-script;
 
 method handle {
-    ($.name, $.auth, $.version).join(‘_’);
+    ($.name, $.auth, $.version, $.api).map({$_ // ""}).join(‘_’);
 }
 
 method install-path {
