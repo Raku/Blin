@@ -35,7 +35,6 @@ unit sub MAIN(
     *@specified-modules,
 );
 
-
 my $tester = Blin::Tester::Zef.new;
 
 #| Where to pull source info from
