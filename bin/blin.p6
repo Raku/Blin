@@ -2,6 +2,7 @@
 
 use v6.d;
 
+use Blin::Debug;
 use Blin::Module;
 use Blin::Processing;
 use Blin::Tester::Zef;
@@ -111,22 +112,21 @@ my $save-lock = Lock.new; # to eliminate miniscule chance of racing when saving
 # CPAN scale you'd have other problems to deal with anyway.
 
 
-note ‘🥞 Prep’;
+debug ‘Prep’;
 
 $nproc //= ($nproc-multiplier × Kernel.cpu-cores).Int;
 $semaphore = Semaphore.new: $nproc.Int;
 
-note “🥞 Will use up to $nproc threads for testing modules”;
+debug “Will use up to $nproc threads for testing modules”;
 
 ensure-config ‘./config-default.json’;
 pull-cloned-repos; # pull rakudo and other stuff
 
 $start-point //= get-tags(‘2015-12-24’, :default()).tail;
 
-note “🥞 Will compare between $start-point and $end-point”;
+debug “Will compare between $start-point and $end-point”;
 
-
-note ‘🥞 Testing start and end points’;
+debug ‘Testing start and end points’;
 $start-point-full = to-full-commit $start-point;
   $end-point-full = to-full-commit   $end-point;
 
@@ -152,18 +152,16 @@ if $test-end<output>.chomp ne 42 {
     die
 }
 
-
 # Leave some builds unpacked
 my @always-unpacked = $start-point-full, $end-point-full;
 run-smth $_, {;}, :!wipe for @always-unpacked;
 
-note ‘🥞 Modules and stuff’;
+debug ‘Modules and stuff’;
 
 my @modules;
 my %lookup; # e.g. %(foo => [Module foo:v1, …], …)
 
-
-note ‘🥞🥞 Populating the module list and the lookup hash’;
+debug ‘Populating the module list and the lookup hash’, 2;
 for @sources {
     use JSON::Fast;
     # XXX curl because it works
@@ -188,7 +186,7 @@ for @sources {
                auth    => $dist.meta<auth>,
             ;
             if $module.name ∈ $havoc-modules {
-                note “🥞🥞 Module {$module.name} is ignored because it causes havoc”;
+                debug “Module {$module.name} is ignored because it causes havoc”, 2;
                 next
              }
 
@@ -200,12 +198,12 @@ for @sources {
 }
 
 
-note ‘🥞🥞 Sorting modules’;
+debug ‘Sorting modules’, 2;
 .value = .value.sort(*.version).eager for %lookup;
 
 
 if $custom-script {
-    note ‘🥞🥞 Generating fake modules for custom scripts’;
+    debug ‘Generating fake modules for custom scripts’, 2;
     for $custom-script.list -> IO() $script {
         die “Script “$script” does not exist” unless $script.e;
         my Module $module .= new:
@@ -219,7 +217,7 @@ if $custom-script {
     }
 }
 
-note ‘🥞🥞 Resolving dependencies’;
+debug ‘Resolving dependencies’, 2;
 for @modules -> $module {
     sub resolve-dep($depstr) {
         return Empty if $depstr !~~ Str; # weird stuff, only in Inline::Python
@@ -242,7 +240,7 @@ for @modules -> $module {
 }
 
 
-note ‘🥞🥞 Marking latest versions and their deps’;
+debug ‘Marking latest versions and their deps’, 2;
 for %lookup {
     next unless .key eq .value».name.any; # proceed only if not an alias
     if @specified-modules or $custom-script {
@@ -253,11 +251,11 @@ for %lookup {
 }
 
 
-note ‘🥞🥞 Filtering out uninteresting modules’;
+debug ‘Filtering out uninteresting modules’, 2;
 @modules .= grep: *.needed;
 
 
-note ‘🥞🥞 Detecting cyclic dependencies’;
+debug ‘Detecting cyclic dependencies’, 2;
 for @modules -> $module {
     eager gather $module.safe-deps: True;
     CATCH {
@@ -269,14 +267,14 @@ for @modules -> $module {
 }
 
 
-note ‘🥞🥞 Listing some early errors’;
+debug ‘Listing some early errors’, 2;
 for @modules {
     next unless .done;
     put “{.name} – {.done.result} – {.errors}”;
 }
 
 
-note ‘🥞 Processing’;
+debug ‘Processing’;
 my $processing-done = Promise.new;
 start { # This is just to print something to the terminal regularly
     react {
@@ -340,14 +338,14 @@ react { # actual business here
     }
 }
 
-note ‘🥞🥞 Almost done, waiting for all modules to finish’;
+debug ‘Almost done, waiting for all modules to finish’, 2;
 await @modules».done;
 
 
 $processing-done.keep;
-note ‘🥞 Saving results’;
+debug ‘Saving results’;
 
-note ‘🥞🥞 Saving the overview’;
+debug ‘Saving the overview’, 2;
 
 sub save-overview {
     $save-lock.protect: {
@@ -369,7 +367,7 @@ save-overview;
 
 my @bisected = @modules.grep(*.done.result == Fail);
 
-note '🥞🥞 Saving the failure output';
+debug 'Saving the failure output', 2;
 sub save-markdown { # XXX there is little to no escaping in this sub, but that's OK
     sub module-link($module) {
         “[{ $module.name }](https://raku.land/{ $module.auth }/{ $module.name })”
@@ -433,7 +431,7 @@ sub save-markdown { # XXX there is little to no escaping in this sub, but that's
 save-markdown;
 
 
-note ‘🥞🥞 Saving the json output’;
+debug ‘Saving the json output’, 2;
 {
     my %json-data;
     for @modules {
@@ -450,7 +448,7 @@ note ‘🥞🥞 Saving the json output’;
     spurt $json-path, to-json %json-data;
 }
 
-note ‘🥞🥞 Saving the dot file’;
+debug ‘Saving the dot file’, 2;
 # Not algorithmically awesome, but will work just fine in practice
 my Set $to-visualize = @bisected.Set;
 $to-visualize ∪= (gather  .deps: True).Set for @bisected;
@@ -482,14 +480,14 @@ for $to-visualize.keys -> $module {
 
 if $dot {
     spurt $dot-path, “digraph \{\n    rankdir = BT;\n” ~ $dot ~ “\n}”;
-    note ‘🥞🥞 Creating SVG/PNG images from the dot file’;
+    debug ‘Creating SVG/PNG images from the dot file’, 2;
     run <dot -T svg -o>, $svg-path, $dot-path; # TODO -- ?
     run <dot -T png -o>, $png-path, $dot-path; # TODO -- ?
 } else {
-    note ‘🥞🥞 No regressions found, dot file not saved’;
+    debug ‘No regressions found, dot file not saved’, 2;
 }
 
-note ‘🥞 Cleaning up’;
+debug ‘ Cleaning up’;
 for @always-unpacked {
     my $path = run-smth-build-path $_;
     run <rm -rf -->, $path; # TODO use File::Directory::Tree ?

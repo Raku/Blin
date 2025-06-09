@@ -1,4 +1,6 @@
 use Blin::Module;
+use Blin::Debug;
+
 use Whateverable::Config;
 
 use Whateverable::Bisection;
@@ -435,7 +437,7 @@ sub process-module(Module $module,
 
     my $OK = $testable ?? OK !! InstallableButUntested;
 
-    note “🥞🥞🥞 Testing $module.name() (new)”; # (new revision, end point)
+    debug “Testing $module.name() (new)”, 3; # (new revision, end point)
     my $new-result = test-module   $end-point-full, $module,
                                  :$timeout,
                                  :$tester,
@@ -445,7 +447,7 @@ sub process-module(Module $module,
     spurt $module.install-path.IO.add(‘log-new’), $module.output-new;
     return $module.done.keep: $OK if alright $new-result; # don't even test the old one
 
-    note “🥞🥞🥞 Testing $module.name() (old)”; # (old revision, start point)
+    debug “Testing $module.name() (old)”, 3; # (old revision, start point)
     my $old-result = test-module $start-point-full, $module,
                                  :$timeout,
                                  :$tester,
@@ -455,7 +457,7 @@ sub process-module(Module $module,
 
     return $module.done.keep: AlwaysFail unless alright $old-result;
 
-    note “🥞🥞🥞 Testing $module.name() for flappiness”;
+    debug “Testing $module.name() for flappiness”, 3;
     for ^$deflap {
         # Be careful when touching this piece of code. If you break
         # it, all regressions will appear as flappers
@@ -470,7 +472,7 @@ sub process-module(Module $module,
         # deflap on every bisect step?
     }
 
-    note “🥞🥞🥞 Bisecting $module.name()”;
+    debug “Bisecting $module.name()”, 3;
     my $repo-cwd = tempdir :!unlink;
     LEAVE rmtree $_ with $repo-cwd;
     run :out(Nil), :err(Nil), <git clone>, $CONFIG<projects><rakudo-moar><repo-origin>, $repo-cwd;
