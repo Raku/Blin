@@ -6,7 +6,6 @@ use Blin::Debug;
 use Blin::Module;
 use Blin::Processing;
 use Blin::Tester::Zef;
-use Blin::Tester::Pakku;
 
 use Whateverable;
 use Whateverable::Bits;
@@ -30,18 +29,13 @@ unit sub MAIN(
     #| Number of seconds between printing the current status (default: 60.0)
     Rat() :$heartbeat = 60.0,
 
-    #| Package manager used for testing
-    Str :$pm = 'zef',
     #| Additional scripts to be tested
     :$custom-script, # XXX Oh sausages! https://github.com/rakudo/rakudo/issues/2797
     #| Use this to test some specific modules (empty = whole ecosystem)
     *@specified-modules,
 );
 
-
-my $tester =  $pm ~~ 'zef'
-    ?? Blin::Tester::Zef.new
-    !! Blin::Tester::Pakku.new;
+my $tester = Blin::Tester::Zef.new;
 
 #| Where to pull source info from
 my @sources = $tester.sources;
