@@ -267,7 +267,8 @@ for @modules {
 }
 
 
-debug ‘Processing’;
+debug ‘Processing’, :icon<⏳>;
+
 my $processing-done = Promise.new;
 start { # This is just to print something to the terminal regularly
     react {
@@ -275,10 +276,10 @@ start { # This is just to print something to the terminal regularly
             save-overview; # make sure we save something if it hangs
             my $total  = +@modules;
             my @undone = eager @modules.grep: *.done.not;
-            my $str    = “⏳ {$total - @undone} out of $total modules processed”;
+            my $str    = “{$total - @undone} out of $total modules processed”;
             $str      ~= “ ({(($total-@undone)/$total*1_00_00).Int/100}%)” unless $total-@undone == 0;
             $str      ~= ‘ (left: ’ ~ @undone».name ~ ‘)’ if @undone ≤ 5;
-            note $str;
+            debug $str, :icon<⏳>;
             done unless @undone;
         }
         whenever $processing-done {
