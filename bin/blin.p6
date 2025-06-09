@@ -157,7 +157,7 @@ my %lookup; # e.g. %(foo => [Module foo:v1, …], …)
 debug ‘Populating the module list and the lookup hash’, 2;
 for @sources {
     use JSON::Fast;
-    # XXX curl because it works
+    debug "Getting source: $_", 2;
     my $json-data = run(:out, <curl -->, $_).out.slurp;
     my $json = from-json $json-data;
     for @$json {

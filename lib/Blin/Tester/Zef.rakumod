@@ -47,7 +47,6 @@ submethod TWEAK ( ) {
 
 	debug "Temporarily disabled zef update";
 	#run $*EXECUTABLE.absolute, ‘-I’, $zef-path, $zef-path.add(‘/bin/zef’), “--config-path=$zef-config-path”, ‘update’;
-
     }
 
     $!zef-config-path = $zef-config-path;
