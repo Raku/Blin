@@ -49,7 +49,6 @@ my $havoc-modules = ('November', 'Tika').Set;
 #| Modules with tests that we don't want to run
 my $skip-tests = (
    ‘MoarVM::Remote’, # possibly harmless, but scary anyway
-   ‘November’, # eats memory
    # These seem to hang and leave some processes behind:
    ‘IO::Socket::Async::SSL’,
    ‘IRC::Client’,
