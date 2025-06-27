@@ -30,11 +30,19 @@ unit sub MAIN(
     #| Number of seconds between printing the current status (default: 60.0)
     Rat() :$heartbeat = 60.0,
 
+    #| Test Essential modules B<only>
+    :$essential,
     #| Additional scripts to be tested
     :$custom-script, # XXX Oh sausages! https://github.com/rakudo/rakudo/issues/2797
     #| Use this to test some specific modules (empty = whole ecosystem)
     *@specified-modules,
 );
+
+if $essential {
+    debug "Checking Essentials";
+    debug "Essentials overriding specified modules" if @specified-modules;
+    @specified-modules = @Blin::Essential::essentials;
+}
 
 my $tester = Blin::Tester::Zef.new;
 
