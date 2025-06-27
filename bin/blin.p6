@@ -103,7 +103,6 @@ my $save-lock = Lock.new; # to eliminate miniscule chance of racing when saving
 # with thousands of whenevers. In any case, don't quote me on that. At
 # CPAN scale you'd have other problems to deal with anyway.
 
-
 debug ‘Prep’;
 
 $nproc //= ($nproc-multiplier × Kernel.cpu-cores).Int;
@@ -437,6 +436,7 @@ debug ‘Saving the json output’, 2;
         %json-data{$name}<status>      = ~$status;
         %json-data{$name}<output-new>  = .output-new;
         %json-data{$name}<errors>      = .errors;
+        %json-data{$name}<api>         = .api;
     }
     use JSON::Fast;
     spurt $json-path, to-json %json-data;
