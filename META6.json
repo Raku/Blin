@@ -9,6 +9,7 @@
     "license"     : "AGPL-3.0-or-later",
     "provides"    : {
         "Blin::Debug"         : "lib/Blin/Debug.rakumod",
+        "Blin::Essential"     : "lib/Blin/Essential.rakumod",
         "Blin::Module"        : "lib/Blin/Module.rakumod",
         "Blin::Processing"    : "lib/Blin/Processing.rakumod",
         "Blin::Tester::Zef"   : "lib/Blin/Tester/Zef.rakumod"

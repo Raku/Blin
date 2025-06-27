@@ -6,6 +6,7 @@ use Blin::Debug;
 use Blin::Module;
 use Blin::Processing;
 use Blin::Tester::Zef;
+use Blin::Essential;
 
 use Whateverable;
 use Whateverable::Bits;
