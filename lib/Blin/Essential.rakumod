@@ -5,7 +5,7 @@ unit module Blin::Essential;
 Provide a list of modules in the ecosystem that are considered "Essential".
 
 Goal is to provide a subset of the ecosytem that can easily be tested more often
-than once per release, and with stricter criteria. These should B<always> pass,
+than once per release, and with stricter criteria. These should B<always> pass
 and any failures in testing are considered bad, even if the previous version
 also failed.
 
@@ -13,105 +13,108 @@ B<High use> or B<critical> modules should be added to this list as noted.
 Ideally, an automated selection could be generated based on criteria from
 L<raku.land|https://raku.land>.
 
+Currently all modules are specified in C<name:ver<>:auth<>:api<>> format, but with
+only names specified.
+
 =end Overview
 
-our @essentials =
-    'name' =>  '_',
-    'name' => 'Ake',
-    'name' => 'App::MoarVM::Debug',
-    'name' => 'App::Prove6',
-    'name' => 'App::Prove6',
-    'name' => 'App::Rak',
-    'name' => 'App::Zef-Deps',
-    'name' => 'Badger',
-    'name' => 'Base64',
-    'name' => 'Base64::Native',
-    'name' => 'BSON::Simple',
-    'name' => 'Config::TOML',
-    'name' => 'cro',
-    'name' => 'DateTime::Format',
-    'name' => 'DateTime::Parse',
-    'name' => 'DateTime::Timezones',
-    'name' => 'DB::Pg',
-    'name' => 'DB::SQLite',
-    'name' => 'DBDish::ODBC',
-    'name' => 'DBIish',
-    'name' => 'Digest',
-    'name' => 'Digest::MD5',
-    'name' => 'Email::MIME',
-    'name' => 'Encode',
-    'name' => 'fez',
-    'name' => 'File::Directory::Tree',
-    'name' => 'File::Find',
-    'name' => 'File::HomeDir',
-    'name' => 'File::Temp',
-    'name' => 'File::Temp',
-    'name' => 'File::Which',
-    'name' => 'Getopt::Long',
-    'name' => 'Getopt::Long',
-    'name' => 'Grammar::Debugger',
-    'name' => 'Grammar::Debugger',
-    'name' => 'Grammar::Profiler::Simple',
-    'name' => 'HTTP::Easy',
-    'name' => 'HTTP::Status',
-    'name' => 'HTTP::UserAgent',
-    'name' => 'Humming-Bird',
-    'name' => 'IO::Capture::Simple',
-    'name' => 'IO::Socket::Async::SSL',
-    'name' => 'IO::Socket::SSL',
-    'name' => 'IO::Socket::SSL',
-    'name' => 'IO::String',
-    'name' => 'JSON::Class',
-    'name' => 'JSON::Fast',
-    'name' => 'JSON::Tiny',
-    'name' => 'L10N',
-    'name' => 'LibraryCheck',
-    'name' => 'LibraryMake',
-    'name' => 'LibXML',
-    'name' => 'License::SPDX',
-    'name' => 'Linenoise',
-    'name' => 'Log::Async',
-    'name' => 'Log::Timeline',
-    'name' => 'LWP::Simple',
-    'name' => 'META6',
-    'name' => 'MIME::Base64',
-    'name' => 'MoarVM::Remote',
-    'name' => 'NativeHelpers::Blob',
-    'name' => 'NativeLibs',
-    'name' => 'Net::SMTP',
-    'name' => 'Net::SMTP::Client::Async',
-    'name' => 'OO::Monitors',
-    'name' => 'OpenSSL',
-    'name' => 'Path::Finder',
-    'name' => 'PathTools',
-    'name' => 'PDF',
-    'name' => 'Pod::To::HTML',
-    'name' => 'Pod::Usage',
-    'name' => 'PrettyDump',
-    'name' => 'PSGI',
-    'name' => 'Rainbow',
-    'name' => 'Readline',
-    'name' => 'Red',
-    'name' => 'Shell::Command',
-    'name' => 'sigpipe',
-    'name' => 'Spreadsheet::XLSX',
-    'name' => 'SSL',
-    'name' => 'TAP',
-    'name' => 'Temp::Path',
-    'name' => 'Template6',
-    'name' => 'Terminal::ANSIColor',
-    'name' => 'Terminal::ANSIParser',
-    'name' => 'Terminal::LineEditor',
-    'name' => 'Terminal::Print',
-    'name' => 'Terminal::Widgets',
-    'name' => 'Test::META',
-    'name' => 'Test::Mock',
-    'name' => 'Test::Mock',
-    'name' => 'Test::Output',
-    'name' => 'Test::When',
-    'name' => 'Text::CSV',
-    'name' => 'URI',
-    'name' => 'XML',
-    'name' => 'YAMLish',
-    'name' => 'zef'
-;
+our @essentials = <<
+    '_'
+    'Ake'
+    'App::MoarVM::Debug'
+    'App::Prove6'
+    'App::Prove6'
+    'App::Rak'
+    'App::Zef-Deps'
+    'Badger'
+    'Base64'
+    'Base64::Native'
+    'BSON::Simple'
+    'Config::TOML'
+    'cro'
+    'DateTime::Format'
+    'DateTime::Parse'
+    'DateTime::Timezones'
+    'DB::Pg'
+    'DB::SQLite'
+    'DBDish::ODBC'
+    'DBIish'
+    'Digest'
+    'Digest::MD5'
+    'Email::MIME'
+    'Encode'
+    'fez'
+    'File::Directory::Tree'
+    'File::Find'
+    'File::HomeDir'
+    'File::Temp'
+    'File::Temp'
+    'File::Which'
+    'Getopt::Long'
+    'Getopt::Long'
+    'Grammar::Debugger'
+    'Grammar::Debugger'
+    'Grammar::Profiler::Simple'
+    'HTTP::Easy'
+    'HTTP::Status'
+    'HTTP::UserAgent'
+    'Humming-Bird'
+    'IO::Capture::Simple'
+    'IO::Socket::Async::SSL'
+    'IO::Socket::SSL'
+    'IO::Socket::SSL'
+    'IO::String'
+    'JSON::Class'
+    'JSON::Fast'
+    'JSON::Tiny'
+    'L10N'
+    'LibraryCheck'
+    'LibraryMake'
+    'LibXML'
+    'License::SPDX'
+    'Linenoise'
+    'Log::Async'
+    'Log::Timeline'
+    'LWP::Simple'
+    'META6'
+    'MIME::Base64'
+    'MoarVM::Remote'
+    'NativeHelpers::Blob'
+    'NativeLibs'
+    'Net::SMTP'
+    'Net::SMTP::Client::Async'
+    'OO::Monitors'
+    'OpenSSL'
+    'Path::Finder'
+    'PathTools'
+    'PDF'
+    'Pod::To::HTML'
+    'Pod::Usage'
+    'PrettyDump'
+    'PSGI'
+    'Rainbow'
+    'Readline'
+    'Red'
+    'Shell::Command'
+    'sigpipe'
+    'Spreadsheet::XLSX'
+    'SSL'
+    'TAP'
+    'Temp::Path'
+    'Template6'
+    'Terminal::ANSIColor'
+    'Terminal::ANSIParser'
+    'Terminal::LineEditor'
+    'Terminal::Print'
+    'Terminal::Widgets'
+    'Test::META'
+    'Test::Mock'
+    'Test::Mock'
+    'Test::Output'
+    'Test::When'
+    'Text::CSV'
+    'URI'
+    'XML'
+    'YAMLish'
+    'zef'
+>>;
