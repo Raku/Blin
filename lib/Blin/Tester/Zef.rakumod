@@ -35,6 +35,7 @@ submethod TWEAK ( ) {
         for $zef-config<Repository>.list -> $arr {
             for @$arr {
                 next unless .<module> eq ‘Zef::Repository::Ecosystems’;
+                next if .<short-name> eq 'rea'; # Skip REA for https://github.com/Raku/Blin/issues/43
                 .<options><auto-update> = 0; # XXX why is this not a boolean?
                 @!sources.push(.<options><mirrors>.head);
             }
