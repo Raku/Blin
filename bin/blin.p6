@@ -40,7 +40,7 @@ unit sub MAIN(
 
 if $essential {
     debug "Checking Essentials";
-    debug "Essentials overriding specified modules" if @specified-modules;
+    die ‘Can't use --essential and specify modules’ if @specified-modules;
     @specified-modules = @Blin::Essential::essentials;
 }
 
