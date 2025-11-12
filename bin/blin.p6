@@ -66,7 +66,8 @@ my $skip-tests = (
    ‘MeCab’,
    ‘Time::Duration’,
    ‘Toaster’,
-   ‘Uzu’
+   ‘Uzu’,
+   'Russian' # eats memory
 ).Set;
 
 #↑ XXX Trash pickup services are not working, delete the directory
