@@ -81,8 +81,6 @@ If you want to test the whole ecosystem:
 time RAKULIB=lib bin/blin.p6
 ```
 
-Estimated time to test the whole ecosystem with 24 cores is ≈60 minutes.
-
 **⚠☠ SECURITY NOTE: [issues mentioned in Toaster still
 apply.](https://github.com/perl6-community-modules/perl6-Toaster#warning-dangerus-stuf-ahed)
 Do not run this for the whole ecosystem on non-throwaway
