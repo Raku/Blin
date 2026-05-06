@@ -5,7 +5,6 @@ use v6.d;
 use Blin::Module;
 use Blin::Processing;
 use Blin::Tester::Zef;
-use Blin::Tester::Pakku;
 
 use Whateverable;
 use Whateverable::Bits;
@@ -37,10 +36,7 @@ unit sub MAIN(
     *@specified-modules,
 );
 
-
-my $tester =  $pm ~~ 'zef'
-    ?? Blin::Tester::Zef.new
-    !! Blin::Tester::Pakku.new;
+my $tester =  Blin::Tester::Zef.new;
 
 #| Where to pull source info from
 my @sources = $tester.sources;
