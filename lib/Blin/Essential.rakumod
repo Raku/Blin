@@ -1,5 +1,7 @@
 unit module Blin::Essential;
 
+use JSON::Fast;
+
 =begin Overview
 
 Provide a list of modules in the ecosystem that are considered "Essential".
@@ -18,4 +20,4 @@ only names specified.
 
 =end Overview
 
-our @essentials = %?RESOURCES<essential.json>.lines;
+our @essentials = from-json %?RESOURCES<essential.json>.slurp;
