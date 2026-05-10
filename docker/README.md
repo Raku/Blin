@@ -35,3 +35,5 @@ master: rakudo/blin:latest
 tag v1.0.1: rakudo/blin:1.0.1
 
 ```
+
+Try to trigger a build of docker image off the rc branch...
