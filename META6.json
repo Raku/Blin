@@ -22,7 +22,8 @@
         "Zef"
     ],
     "resources"   : [
-        "essential.json"
+        "essential.json",
+        "fail.json"
     ],
     "source-url"  : "https://github.com/Raku/Blin.git"
 }
