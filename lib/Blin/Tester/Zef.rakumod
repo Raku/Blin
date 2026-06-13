@@ -33,7 +33,7 @@ submethod TWEAK ( ) {
         for $zef-config<Repository>.list -> $arr {
             for @$arr {
                 next unless .<module> eq ‘Zef::Repository::Ecosystems’;
-                .<options><auto-update> = 0; # XXX why is this not a boolean?
+                .<options><auto-update> = 0;
                 @!sources.push(.<options><mirrors>.head);
             }
         }
