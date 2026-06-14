@@ -20,6 +20,6 @@ export NPROCMULT=0.875
 export MAX_MEMORY=63.5G
 
 # Warning in case last run crashed
-echo "If system-d complains, you might need to run `systemctl --user reset-failed`"
+echo "If system-d complains, you might need to run 'systemctl --user reset-failed'"
 
 systemd-run -E RAKULIB=. --user --tty --wait --working-directory=/blin --unit=blin --slice=user.slice --property="CPUWeight=100" --property="MemoryMax=$MAX_MEMORY" raku --ll-exception bin/blin.p6 --old=$OLD --new=$NEW --nproc-multiplier=$NPROCMULT --heartbeat=$HEARTBEAT
