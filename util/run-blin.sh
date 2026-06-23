@@ -9,6 +9,7 @@
 # What versions are we testing (get latest tag for OLD version)
 export OLD=`curl --silent -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" "https://api.github.com/repos/rakudo/rakudo/releases?per_page=1" | grep 'tag_name' | awk -F: '{print $2}' | awk -F\" '{print $2}'`
 export NEW=HEAD
+echo "$OLD..$NEW"
 
 # How often to emit diagnostics
 export HEARTBEAT=60
