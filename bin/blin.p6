@@ -167,8 +167,7 @@ for @sources {
     use JSON::Fast;
     debug "Getting source: $_", 2;
     my $json-data = run(:out, <curl -->, $_).out.slurp;
-    my $json = from-json $json-data;
-    for @$json {
+    for @$json-data {
         use Zef::Distribution; # use Zef::Distribution for parsing complicated dependency specifications
         with try Zef::Distribution.new(|%($_)) -> $dist {
             state @ignore-specs = $ignored-deps.keys.map({ Zef::Distribution::DependencySpecification.new($_) });
@@ -199,10 +198,8 @@ for @sources {
     }
 }
 
-
 debug ‘Sorting modules’, 2;
 .value = .value.sort(*.version).eager for %lookup;
-
 
 if $custom-script {
     debug ‘Generating fake modules for custom scripts’, 2;
