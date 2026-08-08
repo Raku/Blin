@@ -21,16 +21,16 @@ unit sub MAIN(
     Str :new($end-point) = ‘HEAD’,
     #| Number of threads to use ({Kernel.cpu-cores} if unset)
     Int :$nproc is copy,
-    #| Thread number multiplier (default: 1.0)
+    #| Thread number multiplier
     Rat() :$nproc-multiplier = 1.0,
-    #| Number of extra runs for regressed modules (default: 4)
+    #| Number of extra runs for regressed modules
     Int :$deflap = 4, # Can be really high because generally we are
                       # not expecting a large fallout with many
                       # now-failing modules.
-    #| Number of seconds between printing the current status (default: 60.0)
+    #| Number of seconds between printing the current status
     Rat() :$heartbeat = 60.0,
 
-    #| Test Essential modules B<only>
+    #| Test Essential modules only
     :$essential,
     #| Additional scripts to be tested
     :$custom-script, # XXX Oh sausages! https://github.com/rakudo/rakudo/issues/2797
@@ -167,7 +167,8 @@ for @sources {
     use JSON::Fast;
     debug "Getting source: $_", 2;
     my $json-data = run(:out, <curl -->, $_).out.slurp;
-    for @$json-data {
+    my $json = from-json $json-data;
+    for @$json {
         use Zef::Distribution; # use Zef::Distribution for parsing complicated dependency specifications
         with try Zef::Distribution.new(|%($_)) -> $dist {
             state @ignore-specs = $ignored-deps.keys.map({ Zef::Distribution::DependencySpecification.new($_) });
@@ -237,7 +238,6 @@ for @modules -> $module {
     $module.depends = $module.depends.keys.map(&resolve-dep).Set;
     .rdepends ∪= $module for $module.depends.keys;
 }
-
 
 debug ‘Marking latest versions and their deps’, 2;
 for %lookup {
