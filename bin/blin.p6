@@ -54,22 +54,7 @@ my @sources = $tester.sources;
 my $ignored-deps  = <Test NativeCall Pod::To::Text Telemetry snapper perl CORE>.Set;
 
 #| Modules with tests that we don't want to run
-my $skip-tests = (
-   ‘MoarVM::Remote’, # possibly harmless, but scary anyway
-   # These seem to hang and leave some processes behind:
-   ‘IO::Socket::Async::SSL’,
-   ‘IRC::Client’,
-   ‘Perl6::Ecosystem’,           # eats memory
-   # These were ignored by Toaster, but reasons are unknown:
-   ‘HTTP::Server::Async’,
-   ‘HTTP::Server::Threaded’,
-   ‘Log::Minimal’,
-   ‘MeCab’,
-   ‘Time::Duration’,
-   ‘Toaster’,
-   ‘Uzu’,
-   'Russian' # eats memory
-).Set;
+my $skip-tests = @Blin::Skips::skips.grep({$_<action> eq "skip-test"}).map(*<name>).Set;
 
 #↑ XXX Trash pickup services are not working, delete the directory
 #↑     manually from time to time.

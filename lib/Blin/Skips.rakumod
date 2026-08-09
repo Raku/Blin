@@ -11,7 +11,9 @@ Each skip will contain a name, a reason, and an action.
 Reason may be a text description, but if possible should be a URL to a ticket in
 that module's bug tracker.
 
-If action is set to "skip", this module is not tested at all.
+If action is set to "skip", this module is not installed or tested at any version.
+
+If action is set to "skip-test", this module is installed but not tested.
 
 If action is blank, and the "new" revision fails, do not bother testing the "old"
 revision, instead marking it as AlwaysFail.
