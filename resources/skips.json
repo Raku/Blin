@@ -19,7 +19,7 @@
     "reason": "Historic: Hang",
     "action": "skip-test"
 }, {
-    "name":   "Perl6::Ecosystemt",
+    "name":   "Perl6::Ecosystem",
     "reason": "Historic: Memory",
     "action": "skip-test"
 }, {
@@ -53,5 +53,9 @@
 }, {
     "name":   "Russian",
     "reason": "Historic: Memory",
+    "action": "skip-test"
+}, {
+    "name":   "Web::Scraper",
+    "reason": "Hangs: https://github.com/tony-o/perl6-web-scraper/issues/8",
     "action": "skip-test"
 }]
