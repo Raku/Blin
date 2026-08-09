@@ -7,6 +7,7 @@ use Blin::Module;
 use Blin::Processing;
 use Blin::Tester::Zef;
 use Blin::Essential;
+use Blin::Skips;
 
 use Whateverable;
 use Whateverable::Bits;
@@ -51,9 +52,6 @@ my @sources = $tester.sources;
 
 #| Core modules that are ignored as dependencies
 my $ignored-deps  = <Test NativeCall Pod::To::Text Telemetry snapper perl CORE>.Set;
-
-#| Modules that should not be installed at all
-my $havoc-modules = ('November', 'Tika').Set;
 
 #| Modules with tests that we don't want to run
 my $skip-tests = (
@@ -187,8 +185,8 @@ for @sources {
                 depends => @depends.Set,
                 auth    => $dist.meta<auth>,
             ;
-            if $module.name ∈ $havoc-modules {
-                debug “Module {$module.name} is ignored because it causes havoc”, 2;
+            if @Blin::Skips::skips.grep({$_<name> eq $module.name}) {
+                debug “Module {$module.name} is skipped due to skips.json”, 2;
                 next
              }
 
