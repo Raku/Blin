@@ -170,7 +170,7 @@ for @sources {
                 depends => @depends.Set,
                 auth    => $dist.meta<auth>,
             ;
-            if @Blin::Skips::skips.grep({$_<name> eq $module.name}) {
+            if @Blin::Skips::skips.grep({$_<action> eq "skip" and $_<name> eq $module.name}) {
                 debug “Module {$module.name} is skipped due to skips.json”, 2;
                 next
              }
