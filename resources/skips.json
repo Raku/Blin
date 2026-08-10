@@ -7,6 +7,10 @@
     "reason": "Historic",
     "action": "skip"
 }, {
+    "name":   "Ecosystem::Archive",
+    "reason": "Obsolete",
+    "action": "skip"
+}, {
     "name":   "MoarVM::Remote",
     "reason": "Historic: Scary",
     "action": "skip-test"
