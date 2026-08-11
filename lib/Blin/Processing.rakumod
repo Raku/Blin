@@ -14,6 +14,19 @@ use File::Directory::Tree;
 
 unit module Blin::Processing;
 
+# Get output from running command
+# Wrapper for Whateverable::Output::get-output that wraps the command
+# in a systemd-run call to prevent OOM errors from taking down everything
+
+sub get-wrapped-output(*@run-args, :$timeout, :$stdin, :$ENV, :$cwd = $*CWD, :$chomp = True) {
+    my @systemd-cmd = 'systemd-run', "--working-dir=$cwd", '--user', '--tty', '--wait', '--slice=user.slice';
+    for $ENV.keys -> $var {
+        @systemd-cmd.append: '-E', "$var={$ENV{$var}}";
+    }
+    @run-args.prepend: @systemd-cmd;
+    get-output(@run-args, :$stdin, :$cwd, :$chomp);
+}
+
 # Testing and Bisection
 
 # Keep in mind that here we are bisecting `fail`s only.
@@ -392,13 +405,13 @@ sub test-module($full-commit-hash, $module,
 
         my $result;
         if $module.test-script { # fake module
-            $result = get-output $binary-path,
+            $result = get-wrapped-output $binary-path,
                       ‘--’,
                       $module.test-script,
                       :stdin(‘’), :$timeout, ENV => %tweaked-env, :!chomp;
         } else { # normal module
 
-            $result = get-output $binary-path,
+            $result = get-wrapped-output $binary-path,
                       ‘--’,
                       $tester.test-command( :$testable, :$install-path, module-name => $module.name ),
                       :stdin(‘’), :$timeout, ENV => %tweaked-env, :!chomp;
