@@ -1,0 +1,65 @@
+[{
+    "name":   "November",
+    "reason": "Historic",
+    "action": "skip"
+}, {
+    "name":   "Tika",
+    "reason": "Historic",
+    "action": "skip"
+}, {
+    "name":   "Ecosystem::Archive",
+    "reason": "Obsolete",
+    "action": "skip"
+}, {
+    "name":   "MoarVM::Remote",
+    "reason": "Historic: Scary",
+    "action": "skip-test"
+}, {
+    "name":   "IO::Socket::Async::SSL",
+    "reason": "Historic: Hang",
+    "action": "skip-test"
+}, {
+    "name":   "IRC::Client",
+    "reason": "Historic: Hang",
+    "action": "skip-test"
+}, {
+    "name":   "Perl6::Ecosystem",
+    "reason": "Historic: Memory",
+    "action": "skip-test"
+}, {
+    "name":   "HTTP::Server::Async",
+    "reason": "Historic: Toaster",
+    "action": "skip-test"
+}, {
+    "name":   "HTTP::Server::Threaded",
+    "reason": "Historic: Toaster",
+    "action": "skip-test"
+}, {
+    "name":   "Log::Minimal",
+    "reason": "Historic: Toaster",
+    "action": "skip-test"
+}, {
+    "name":   "MeCab",
+    "reason": "Historic: Toaster",
+    "action": "skip-test"
+}, {
+    "name":   "Time::Duration",
+    "reason": "Historic: Toaster",
+    "action": "skip-test"
+}, {
+    "name":   "Toaster",
+    "reason": "Historic: Toaster",
+    "action": "skip-test"
+}, {
+    "name":   "Uzu",
+    "reason": "Historic: Toaster",
+    "action": "skip-test"
+}, {
+    "name":   "Russian",
+    "reason": "Historic: Memory",
+    "action": "skip-test"
+}, {
+    "name":   "Web::Scraper",
+    "reason": "Hangs: https://github.com/tony-o/perl6-web-scraper/issues/8",
+    "action": "skip-test"
+}]

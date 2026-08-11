@@ -4,10 +4,14 @@
     "version"     : "1.0.1",
     "description" : "Project Blin – Toasting Reinvented",
     "authors"     : [
-        "Aleks-Daniel Jakimenko-Aleksejev <alex.jakimenko@gmail.com>"
+        "Aleks-Daniel Jakimenko-Aleksejev <alex.jakimenko@gmail.com>",
+        "Will Coleda <will@coleda.com>"
     ],
     "license"     : "AGPL-3.0-or-later",
     "provides"    : {
+        "Blin::Debug"         : "lib/Blin/Debug.rakumod",
+        "Blin::Essential"     : "lib/Blin/Essential.rakumod",
+        "Blin::Skips"         : "lib/Blin/Skips.rakumod",
         "Blin::Module"        : "lib/Blin/Module.rakumod",
         "Blin::Processing"    : "lib/Blin/Processing.rakumod",
         "Blin::Tester::Zef"   : "lib/Blin/Tester/Zef.rakumod"
@@ -19,6 +23,9 @@
         "Whateverable",
         "Zef"
     ],
-    "resources"   : [ ],
+    "resources"   : [
+        "essential.json",
+        "skips.json"
+    ],
     "source-url"  : "https://github.com/Raku/Blin.git"
 }
