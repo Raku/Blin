@@ -24,7 +24,7 @@ sub get-wrapped-output(*@run-args, :$timeout, :$stdin, :$ENV, :$cwd = $*CWD, :$c
         @systemd-cmd.append: '-E', "$var={$ENV{$var}}";
     }
     @run-args.prepend: @systemd-cmd;
-    get-output(@run-args, :$stdin, :$cwd, :$chomp);
+    get-output(@run-args, :$timeout, :$stdin, :$cwd, :$chomp);
 }
 
 # Testing and Bisection
