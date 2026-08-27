@@ -73,7 +73,6 @@
     "Shell::Command",
     "sigpipe",
     "Spreadsheet::XLSX",
-    "SSL",
     "TAP",
     "Temp::Path",
     "Template6",
