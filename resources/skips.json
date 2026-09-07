@@ -62,4 +62,8 @@
     "name":   "Web::Scraper",
     "reason": "Hangs: https://github.com/tony-o/perl6-web-scraper/issues/8",
     "action": "skip-test"
+}, {
+    "name":   "Text::Markdown::Discount",
+    "reason": "Randomly dies: https://github.com/raku-community-modules/Text-Markdown-Discount/issues/9",
+    "action": "skip-test"
 }]
