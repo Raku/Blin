@@ -8,6 +8,7 @@ export RUNDIR=$HOME/sandbox/blin
 # A large store directory causes the initial zef update run to take *10 minutes* to complete
 # Remove it each time. (This probably impacts individual calls later during the blin run).
 rm -rf data/zef-data/store 
+rm -rf data/zef-data/tmp
 
 # failed jobs might leave the rakudo copies in a locked state.
 rm -rf /tmp/whateverable/rakudo-moar/
