@@ -27,4 +27,4 @@ export MAX_MEMORY=60G
 # In case last run crashed, clear the error
 systemctl --user reset-failed
 
-systemd-run -E RAKULIB=. --user --tty --wait --working-directory=$RUNDIR --unit=blin --slice=user.slice --property="CPUWeight=100" --property="MemoryMax=$MAX_MEMORY" raku bin/blin.p6 --old=$OLD --new=$NEW --heartbeat=$HEARTBEAT
+systemd-run -E RAKULIB=. --user --tty --wait --working-directory=$RUNDIR --unit=blin --slice=user.slice --property="CPUWeight=101" --property="OOMPolicy=continue" --property="ManagedOOMPreference=omit" --property="OOMScoreAdjust=-1000" raku bin/blin.p6 --old=$OLD --new=$NEW --heartbeat=$HEARTBEAT
