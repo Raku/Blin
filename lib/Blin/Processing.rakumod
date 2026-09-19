@@ -19,7 +19,7 @@ unit module Blin::Processing;
 # in a systemd-run call to prevent OOM errors from taking down everything
 
 sub get-wrapped-output(*@run-args, :$timeout, :$stdin, :$ENV, :$cwd = $*CWD, :$chomp = True) {
-    my @systemd-cmd = 'systemd-run', "--working-dir=$cwd", '--user', '--tty', '--wait', '--slice=user.slice';
+    my @systemd-cmd = 'systemd-run', "--working-dir=$cwd", '--user', '--tty', '--wait', '--slice=user.slice', '--property=OOMScoreAdjust=1000';
     for $ENV.keys -> $var {
         @systemd-cmd.append: '-E', "$var={$ENV{$var}}";
     }
