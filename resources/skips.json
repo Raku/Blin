@@ -66,4 +66,24 @@
     "name":   "Text::Markdown::Discount",
     "reason": "Randomly dies: https://github.com/raku-community-modules/Text-Markdown-Discount/issues/9",
     "action": "skip-test"
+}, {
+    "name":   "P5__DATA__",
+    "reason": "Fails on RakuAST - Wontfix",
+    "action": "skip-test"
+}, {
+    "name":   "French",
+    "reason": "Fails on RakuAST - Wontfix",
+    "action": "skip-test"
+}, {
+    "name":   "Portuguese",
+    "reason": "Fails on RakuAST - Wontfix",
+    "action": "skip-test"
+}, {
+    "name":   "Control::Bail",
+    "reason": "Fails on RakuAST - Wontfix",
+    "action": "skip-test"
+}, {
+    "name":   "Sustenance",
+    "reason": "Fails on RakuAST - Wontfix",
+    "action": "skip-test"
 }]
