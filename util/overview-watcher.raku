@@ -56,7 +56,13 @@ sub MAIN(
         }
 
         # Write output all at once to reduce screen flashing
-        my @output = colored('States', 'bold yellow');
+        my $total;
+        for @states { $total+= %results<counts>{$_} };
+        my $percent = ($total-%results<counts><Unknown>)/$total*100;
+        my @output = colored(sprintf('Completed: %.02f%%', $percent), 'bold blue');
+        @output.push('');
+
+        @output.push(colored('States', 'bold yellow'));
         for @states {
             my $line = sprintf('    %-*s %5d', $state-len, $_, %results<counts>{$_} // 0);
             @output.push: colored($line, color-for($_));
