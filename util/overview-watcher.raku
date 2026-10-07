@@ -24,6 +24,7 @@ sub MAIN(
     Str :$overview-file = 'output/overview',  # Location of overview file
     Int :$fade-time = 24,                     # Seconds to fade out highlight
     ) {
+
     my %prev    = flat @states Z, 0 xx *;
     my %updated = flat @states Z, 0 xx *;
 
@@ -77,6 +78,10 @@ sub MAIN(
             done;
         }
         whenever Supply.interval(1) {
+            unless $overview-file.IO.e {
+                note "$overview-file does not exist.";
+	        exit;
+            }
             my %results = parse-overview($overview-file);
             update-from-results(%results);
             show-current(%results, %updated);
